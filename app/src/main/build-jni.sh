@@ -1,5 +1,8 @@
 #!/bin/bash
 
+rm -rf assets
+rm -rf ../../libs
+
 ndk-build
 
 mkdir -p assets/armeabi-v7a

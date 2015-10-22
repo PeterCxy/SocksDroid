@@ -52,7 +52,7 @@ public class SocksVpnService extends VpnService {
 			mInterface = b.setMtu(1500)
 			 .setSession(name)
 			 .addAddress("26.26.26.1", 24)
-			 .addRoute("192.30.0.0", 16)
+			 .addRoute("0.0.0.0", 0)
 			 .addDnsServer("8.8.8.8")
 			 .addDisallowedApplication("net.typeblog.stunnel")
 			 .establish();
@@ -68,7 +68,7 @@ public class SocksVpnService extends VpnService {
 			+ " --socks-server-addr %s:%d"
 			+ " --tunfd %d"
 			+ " --tunmtu 1500"
-			+ " --loglevel 5"
+			+ " --loglevel 3"
 			+ " --pid %s/tun2socks.pid"
 		, DIR, server, port, fd, DIR);
 		
@@ -82,6 +82,15 @@ public class SocksVpnService extends VpnService {
 		}
 		
 		Log.d(TAG, "" + Utility.exec(command));
+		
+		int i = 0;
+		while (i < 5) {
+			if (System.sendfd(fd) != -1) {
+				break;
+			}
+			
+			i++;
+		}
 	}
 	
 	

@@ -35,19 +35,19 @@ include $(BUILD_STATIC_LIBRARY)
 ## system
 ########################################################
 
-#include $(CLEAR_VARS)
+include $(CLEAR_VARS)
 
-#LOCAL_MODULE:= system
+LOCAL_MODULE:= system
 
-#LOCAL_C_INCLUDES:= $(LOCAL_PATH)/libancillary
+LOCAL_C_INCLUDES:= $(LOCAL_PATH)/libancillary
 
-#LOCAL_SRC_FILES:= system.cpp
+LOCAL_SRC_FILES:= system.cpp
 
-#LOCAL_LDLIBS := -ldl -llog
+LOCAL_LDLIBS := -ldl -llog
 
-#LOCAL_STATIC_LIBRARIES := cpufeatures libancillary
+LOCAL_STATIC_LIBRARIES := cpufeatures libancillary
 
-#include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
 
 ########################################################
 ## tun2socks

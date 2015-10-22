@@ -18,7 +18,7 @@
 #define LOGW(...) do { __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__); } while(0)
 #define LOGE(...) do { __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__); } while(0)
 
-jstring Java_com_github_shadowsocks_system_getabi(JNIEnv *env, jobject thiz) {
+jstring Java_net_typeblog_socks_system_getabi(JNIEnv *env, jobject thiz) {
   AndroidCpuFamily family = android_getCpuFamily();
   uint64_t features = android_getCpuFeatures();
   const char *abi;
@@ -37,17 +37,17 @@ jstring Java_com_github_shadowsocks_system_getabi(JNIEnv *env, jobject thiz) {
   return env->NewStringUTF(abi);
 }
 
-void Java_com_github_shadowsocks_system_exec(JNIEnv *env, jobject thiz, jstring cmd) {
+void Java_net_typeblog_socks_system_exec(JNIEnv *env, jobject thiz, jstring cmd) {
     const char *str  = env->GetStringUTFChars(cmd, 0);
     system(str);
     env->ReleaseStringUTFChars(cmd, str);
 }
 
-void Java_com_github_shadowsocks_system_jniclose(JNIEnv *env, jobject thiz, jint fd) {
+void Java_net_typeblog_socks_system_jniclose(JNIEnv *env, jobject thiz, jint fd) {
     close(fd);
 }
 
-jint Java_com_github_shadowsocks_system_sendfd(JNIEnv *env, jobject thiz, jint tun_fd) {
+jint Java_net_typeblog_socks_system_sendfd(JNIEnv *env, jobject thiz, jint tun_fd) {
     int fd;
     struct sockaddr_un addr;
 
@@ -58,7 +58,7 @@ jint Java_com_github_shadowsocks_system_sendfd(JNIEnv *env, jobject thiz, jint t
 
     memset(&addr, 0, sizeof(addr));
     addr.sun_family = AF_UNIX;
-    strncpy(addr.sun_path, "/data/data/com.github.shadowsocks/sock_path", sizeof(addr.sun_path)-1);
+    strncpy(addr.sun_path, "/data/data/net.typeblog.socks/sock_path", sizeof(addr.sun_path)-1);
 
     if (connect(fd, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
         LOGE("connect() failed: %s (fd = %d)\n", strerror(errno), fd);
@@ -76,17 +76,17 @@ jint Java_com_github_shadowsocks_system_sendfd(JNIEnv *env, jobject thiz, jint t
     return 0;
 }
 
-static const char *classPathName = "com/github/shadowsocks/System";
+static const char *classPathName = "net/typeblog/socks/System";
 
 static JNINativeMethod method_table[] = {
     { "jniclose", "(I)V",
-        (void*) Java_com_github_shadowsocks_system_jniclose },
+        (void*) Java_net_typeblog_socks_system_jniclose },
     { "sendfd", "(I)I",
-        (void*) Java_com_github_shadowsocks_system_sendfd },
+        (void*) Java_net_typeblog_socks_system_sendfd },
     { "exec", "(Ljava/lang/String;)V",
-        (void*) Java_com_github_shadowsocks_system_exec },
+        (void*) Java_net_typeblog_socks_system_exec },
     { "getABI", "()Ljava/lang/String;",
-        (void*) Java_com_github_shadowsocks_system_getabi }
+        (void*) Java_net_typeblog_socks_system_getabi }
 };
 
 

@@ -104,11 +104,11 @@
  * default: native; others: gdbm */
 #define CACHE_DBM DBM_NATIVE
 
-#define CONFDIR "/data/data/com.github.shadowsocks"
+#define CONFDIR "/data/data/net.typeblog.socks"
 
-#define CACHEDIR "/data/data/com.github.shadowsocks"
+#define CACHEDIR "/data/data/net.typeblog.socks"
 
-#define TEMPDIR "/data/data/com.github.shadowsocks/cache";
+#define TEMPDIR "/data/data/net.typeblog.socks/cache";
 
 /* This is for various debugging facilities that produce debug output and
  * double-check some values. You can enable debug messages with the -g option.

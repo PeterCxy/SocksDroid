@@ -112,6 +112,8 @@ public class SocksVpnService extends VpnService {
 			command += " --password " + passwd;
 		}
 		
+		command += " --enable-udprelay";
+		
 		if (DEBUG) {
 			Log.d(TAG, command);
 		}

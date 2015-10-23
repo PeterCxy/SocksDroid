@@ -292,7 +292,7 @@ LinkedList1 tcp_clients;
 // number of clients
 int num_clients;
 
-#ifdef ANDROID_DNS
+#ifdef ANDROID
 // Address of dnsgw
 BAddr dnsgw;
 void terminate (void);
@@ -310,7 +310,7 @@ static void lwip_init_job_hadler (void *unused);
 static void tcp_timer_handler (void *unused);
 static void device_error_handler (void *unused);
 static void device_read_handler_send (void *unused, uint8_t *data, int data_len);
-#ifdef ANDROID_DNS
+#ifdef ANDROID
 static int process_device_dns_packet (uint8_t *data, int data_len);
 #endif
 static int process_device_udp_packet (uint8_t *data, int data_len);
@@ -719,9 +719,7 @@ void print_help (const char *name)
         "        [--fake-proc]\n"
         "        [--tunfd <fd>]\n"
         "        [--tunmtu <mtu>]\n"
-#ifdef ANDROID_DNS
         "        [--dnsgw <dns_gateway_address>]\n"
-#endif
         "        [--pid <pid_file>]\n"
 #else
         "        [--tundev <name>]\n"
@@ -734,7 +732,7 @@ void print_help (const char *name)
         "        [--password <password>]\n"
         "        [--password-file <file>]\n"
         "        [--append-source-to-username]\n"
-#ifdef ANDROID_DNS
+#ifdef ANDROID
         "        [--enable-udprelay]\n"
         "        [--udprelay-max-connections <number>]\n"
 #else
@@ -893,7 +891,6 @@ int parse_arguments (int argc, char *argv[])
             }
             i++;
         }
-#ifdef ANDROID_DNS
         else if (!strcmp(arg, "--dnsgw")) {
             if (1 >= argc - i) {
                 fprintf(stderr, "%s: requires an argument\n", arg);
@@ -902,7 +899,6 @@ int parse_arguments (int argc, char *argv[])
             options.dnsgw = argv[i + 1];
             i++;
         }
-#endif
         else if (!strcmp(arg, "--pid")) {
             if (1 >= argc - i) {
                 fprintf(stderr, "%s: requires an argument\n", arg);
@@ -980,7 +976,7 @@ int parse_arguments (int argc, char *argv[])
         else if (!strcmp(arg, "--append-source-to-username")) {
             options.append_source_to_username = 1;
         }
-#ifdef ANDROID_DNS
+#ifdef ANDROID
         else if (!strcmp(arg, "--enable-udprelay")) {
             options.udpgw_remote_server_addr = "0.0.0.0:0";
 #else
@@ -993,7 +989,7 @@ int parse_arguments (int argc, char *argv[])
             i++;
 #endif
         }
-#ifdef ANDROID_DNS
+#ifdef ANDROID
         else if (!strcmp(arg, "--udprelay-max-connections")) {
 #else
         else if (!strcmp(arg, "--udpgw-max-connections")) {
@@ -1008,7 +1004,7 @@ int parse_arguments (int argc, char *argv[])
             }
             i++;
         }
-#ifndef ANDROID_DNS
+#ifndef ANDROID
         else if (!strcmp(arg, "--udpgw-connection-buffer-size")) {
             if (1 >= argc - i) {
                 fprintf(stderr, "%s: requires an argument\n", arg);
@@ -1130,7 +1126,7 @@ int process_arguments (void)
     // resolve remote udpgw server address
     if (options.udpgw_remote_server_addr) {
         if (!BAddr_Parse2(&udpgw_remote_server_addr, options.udpgw_remote_server_addr, NULL, 0, 0)) {
-#ifdef ANDROID_DNS
+#ifdef ANDROID
             BLog(BLOG_ERROR, "udprelay server addr: BAddr_Parse2 failed");
 #else
             BLog(BLOG_ERROR, "remote udpgw server addr: BAddr_Parse2 failed");
@@ -1139,7 +1135,7 @@ int process_arguments (void)
         }
     }
 
-#ifdef ANDROID_DNS
+#ifdef ANDROID
     // resolve dnsgw addr
     if (options.dnsgw) {
         if (!BAddr_Parse2(&dnsgw, options.dnsgw, NULL, 0, 0)) {
@@ -1311,7 +1307,7 @@ void device_read_handler_send (void *unused, uint8_t *data, int data_len)
     // accept packet
     PacketPassInterface_Done(&device_read_interface);
 
-#ifdef ANDROID_DNS
+#ifdef ANDROID
     // process DNS directly
     if (process_device_dns_packet(data, data_len)) {
         return;
@@ -1344,7 +1340,7 @@ void device_read_handler_send (void *unused, uint8_t *data, int data_len)
     }
 }
 
-#ifdef ANDROID_DNS
+#ifdef ANDROID
 int process_device_dns_packet (uint8_t *data, int data_len)
 {
     ASSERT(data_len >= 0)

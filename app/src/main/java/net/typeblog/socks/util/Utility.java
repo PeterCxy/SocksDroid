@@ -1,6 +1,7 @@
 package net.typeblog.socks.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.util.Log;
 
@@ -19,10 +20,25 @@ public class Utility {
 	private static final String TAG = Utility.class.getSimpleName();
 	
 	public static void extractFile(Context context) {
+		// Check app version
+		SharedPreferences pref = context.getSharedPreferences("ver", Context.MODE_PRIVATE);
+		
+		int ver = 0;
+		try {
+			ver = context.getPackageManager().getPackageInfo("net.typeblog.socks", 0).versionCode;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+			//return;
+		}
+		
+		if (pref.getInt("ver", -1) == ver) {
+			return;
+		}
+		
 		String target = DIR;
 		
 		if (new File(target + "/tun2socks").exists()) {
-			return;
+			new File(target + "/tun2socks").delete();
 		}
 		
 		new File(target).mkdir();
@@ -67,6 +83,8 @@ public class Utility {
 				
 			}
 		}
+		
+		pref.edit().putInt("ver", ver).commit();
 		
 	}
 	

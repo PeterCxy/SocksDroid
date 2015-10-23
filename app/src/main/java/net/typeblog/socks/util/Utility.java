@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.util.List;
 
+import net.typeblog.socks.R;
 import static net.typeblog.socks.BuildConfig.DEBUG;
 import static net.typeblog.socks.util.Constants.*;
 
@@ -39,6 +40,10 @@ public class Utility {
 		
 		if (new File(target + "/tun2socks").exists()) {
 			new File(target + "/tun2socks").delete();
+		}
+		
+		if (new File(target + "/pdnsd").exists()) {
+			new File(target + "/pdnsd").delete();
 		}
 		
 		new File(target).mkdir();
@@ -129,7 +134,7 @@ public class Utility {
 		}
 		
 		try {
-			int pid = Integer.parseInt(str.toString());
+			int pid = Integer.parseInt(str.toString().trim().replace("\n", ""));
 			Runtime.getRuntime().exec("kill " + pid).waitFor();
 			file.delete();
 		} catch (Exception e) {
@@ -145,5 +150,34 @@ public class Utility {
 		}
 		
 		return ret.substring(0, ret.length() - separator.length());
+	}
+	
+	public static void makePdnsdConf(Context context, String dns) {
+		String conf = String.format(context.getString(R.string.pdnsd_conf), dns);
+		
+		File f = new File(DIR + "/pdnsd.conf");
+		
+		if (f.exists()) {
+			f.delete();
+		}
+		
+		try {
+			OutputStream out = new FileOutputStream(f);
+			out.write(conf.getBytes());
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			
+		}
+		
+		File cache = new File(DIR + "/pdnsd.cache");
+		
+		if (!cache.exists()) {
+			try {
+				cache.createNewFile();
+			} catch (Exception e) {
+				
+			}
+		}
 	}
 }

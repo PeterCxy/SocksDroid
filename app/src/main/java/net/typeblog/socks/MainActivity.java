@@ -16,10 +16,10 @@ public class MainActivity extends Activity {
 		
 		Utility.extractFile(this);
 		
-		startVpn();
+		getFragmentManager().beginTransaction().replace(R.id.frame, new ProfileFragment()).commit();
 	}
 
-	@Override
+	/*@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
@@ -28,6 +28,7 @@ public class MainActivity extends Activity {
 				.putExtra(INTENT_NAME, "test")
 				.putExtra(INTENT_SERVER, "127.0.0.1")
 				.putExtra(INTENT_PORT, 2352)
+				
 				;
 			
 			startService(i);
@@ -41,5 +42,5 @@ public class MainActivity extends Activity {
 		} else {
 			onActivityResult(0, RESULT_OK, null);
 		}
-	}
+	}*/
 }

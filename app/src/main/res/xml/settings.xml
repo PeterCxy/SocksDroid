@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	
+	<ListPreference
+		android:key="profile"
+		android:title="@string/profile"/>
+	
+	<PreferenceCategory
+		android:title="@string/connection">
+		
+		<EditTextPreference
+			android:key="server_ip"
+			android:title="@string/server_ip"/>
+		
+		<EditTextPreference
+			android:key="server_port"
+			android:title="@string/server_port"
+			android:inputType="number"/>
+		
+	</PreferenceCategory>
+	
+	<PreferenceCategory
+		android:title="@string/authentication">
+		
+		<CheckBoxPreference
+			android:key="auth_userpw"
+			android:title="@string/auth_userpw"
+			android:defaultValue="false"/>
+		
+		<EditTextPreference
+			android:key="auth_username"
+			android:title="@string/auth_username"
+			android:dependency="auth_userpw"/>
+		
+		<EditTextPreference
+			android:key="auth_password"
+			android:title="@string/auth_password"
+			android:inputType="textPassword"
+			android:dependency="auth_userpw"/>
+		
+	</PreferenceCategory>
+	
+	<PreferenceCategory
+		android:title="@string/advanced">
+		
+		<ListPreference
+			android:key="adv_route"
+			android:title="@string/adv_route"/>
+		
+	</PreferenceCategory>
+	
+</PreferenceScreen>

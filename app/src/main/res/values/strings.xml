@@ -2,6 +2,30 @@
 <resources>
 
     <string name="app_name">SocksDroid</string>
-    <string name="hello_world">Hello world!</string>
+    
+	<string name="profile">Profile</string>
+	<string name="prof_default">Default</string>
+	
+	<string name="connection">Connection</string>
+	<string name="server_ip">Server IP</string>
+	<string name="server_port">Server Port</string>
+	
+	<string name="authentication">Authentication</string>
+	<string name="auth_userpw">Username / Password</string>
+	<string name="auth_username">Username</string>
+	<string name="auth_password">Password</string>
+	
+	<string name="advanced">Advanced</string>
+	<string name="adv_route">Route</string>
+	<string name="adv_route_all">All (Default)</string>
+	<string name="adv_route_non_chn">Non-Chinese IPs</string>
+	
+	<string name="prof_add">Add profile</string>
+	<string name="prof_del">Delete profile</string>
+	<string name="prof_del_confirm">Delete profile %s?</string>
+	<string name="switch_main">Switch the proxy on / off</string>
+	
+	<string name="err_add_prof">Failed to add profile %s</string>
+	<string name="err_del_prof">Cannot delete profile %s</string>
 
 </resources>

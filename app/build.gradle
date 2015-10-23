@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "net.typeblog.socks"
-        minSdkVersion 14
-        targetSdkVersion 21
+        minSdkVersion 21
+        targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
     buildTypes {
         release {

@@ -3,6 +3,8 @@ package net.typeblog.socks;
 import android.content.Intent;
 import android.net.VpnService;
 import android.net.VpnService.Builder;
+import android.os.Binder;
+import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
@@ -11,9 +13,21 @@ import static net.typeblog.socks.util.Constants.*;
 import static net.typeblog.socks.BuildConfig.DEBUG;
 
 public class SocksVpnService extends VpnService {
+	class VpnBinder extends Binder {
+		public boolean isRunning() {
+			return mRunning;
+		}
+		
+		public void stop() {
+			stopMe();
+		}
+	}
+	
 	private static final String TAG = SocksVpnService.class.getSimpleName();
 	
 	private ParcelFileDescriptor mInterface;
+	private boolean mRunning = false;
+	private Binder mBinder = new VpnBinder();
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -31,12 +45,7 @@ public class SocksVpnService extends VpnService {
 			Log.d(TAG, "fd: " + mInterface.getFd());
 		
 		if (mInterface != null)
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					start(mInterface.getFd(), server, port, username, passwd);
-				}
-			}).start();
+			start(mInterface.getFd(), server, port, username, passwd);
 		
 		return START_STICKY;
 	}
@@ -44,6 +53,31 @@ public class SocksVpnService extends VpnService {
 	@Override
 	public void onRevoke() {
 		super.onRevoke();
+		stopMe();
+	}
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		return mBinder;
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		stopMe();
+	}
+	
+	private void stopMe() {
+		Utility.killPidFile(DIR + "/tun2socks.pid");
+		
+		try {
+			System.jniclose(mInterface.getFd());
+			mInterface.close();
+		} catch (Exception e) {
+		}
+		
+		stopSelf();
 	}
 	
 	private void configure(String name) {
@@ -54,6 +88,7 @@ public class SocksVpnService extends VpnService {
 			 .addAddress("26.26.26.1", 24)
 			 .addRoute("0.0.0.0", 0)
 			 .addDnsServer("8.8.8.8")
+			 .addDisallowedApplication("net.typeblog.socks")
 			 .addDisallowedApplication("net.typeblog.stunnel")
 			 .establish();
 		} catch (Exception e) {
@@ -81,18 +116,22 @@ public class SocksVpnService extends VpnService {
 			Log.d(TAG, command);
 		}
 		
-		Log.d(TAG, "" + Utility.exec(command));
+		if (Utility.exec(command) != 0) {
+			stopMe();
+			return;
+		}
 		
 		int i = 0;
 		while (i < 5) {
 			if (System.sendfd(fd) != -1) {
-				break;
+				mRunning = true;
+				return;
 			}
 			
 			i++;
 		}
+		
+		// Should not get here. Must be a failure.
+		stopMe();
 	}
-	
-	
-	
 }

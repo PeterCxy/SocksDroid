@@ -45,7 +45,7 @@ public class SocksVpnService extends VpnService {
 			Log.d(TAG, "fd: " + mInterface.getFd());
 		
 		if (mInterface != null)
-			start(mInterface.getFd(), server, port, username, passwd);
+			start(mInterface.getFd(), server, port, username, passwd, "8.8.8.8");
 		
 		return START_STICKY;
 	}
@@ -70,6 +70,7 @@ public class SocksVpnService extends VpnService {
 	
 	private void stopMe() {
 		Utility.killPidFile(DIR + "/tun2socks.pid");
+		Utility.killPidFile(DIR + "/pdnsd.pid");
 		
 		try {
 			System.jniclose(mInterface.getFd());
@@ -96,7 +97,12 @@ public class SocksVpnService extends VpnService {
 		}
 	}
 
-	private void start(int fd, String server, int port, String user, String passwd) {
+	private void start(int fd, String server, int port, String user, String passwd, String dns) {
+		// Start DNS daemon first
+		Utility.makePdnsdConf(this, dns);
+		
+		Utility.exec(String.format("%s/pdnsd -c %s/pdnsd.conf", DIR, DIR));
+		
 		String command = String.format(
 			"%s/tun2socks --netif-ipaddr 26.26.26.2"
 			+ " --netif-netmask 255.255.255.0"
@@ -112,7 +118,7 @@ public class SocksVpnService extends VpnService {
 			command += " --password " + passwd;
 		}
 		
-		command += " --enable-udprelay";
+		command += " --dnsgw 26.26.26.1:8091";
 		
 		if (DEBUG) {
 			Log.d(TAG, command);

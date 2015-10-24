@@ -10,12 +10,14 @@
 		
 		<EditTextPreference
 			android:key="server_ip"
-			android:title="@string/server_ip"/>
+			android:title="@string/server_ip"
+			android:singleLine="true"/>
 		
 		<EditTextPreference
 			android:key="server_port"
 			android:title="@string/server_port"
-			android:inputType="number"/>
+			android:inputType="number"
+			android:singleLine="true"/>
 		
 	</PreferenceCategory>
 	
@@ -30,13 +32,15 @@
 		<EditTextPreference
 			android:key="auth_username"
 			android:title="@string/auth_username"
-			android:dependency="auth_userpw"/>
+			android:dependency="auth_userpw"
+			android:singleLine="true"/>
 		
 		<EditTextPreference
 			android:key="auth_password"
 			android:title="@string/auth_password"
 			android:inputType="textPassword"
-			android:dependency="auth_userpw"/>
+			android:dependency="auth_userpw"
+			android:singleLine="true"/>
 		
 	</PreferenceCategory>
 	
@@ -51,12 +55,14 @@
 		
 		<EditTextPreference
 			android:key="adv_dns"
-			android:title="@string/adv_dns"/>
+			android:title="@string/adv_dns"
+			android:singleLine="true"/>
 		
 		<EditTextPreference
 			android:key="adv_dns_port"
 			android:title="@string/adv_dns_port"
-			android:inputType="number"/>
+			android:inputType="number"
+			android:singleLine="true"/>
 		
 	</PreferenceCategory>
 	

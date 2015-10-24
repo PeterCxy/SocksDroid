@@ -70,6 +70,22 @@ public class Profile {
 		mPref.edit().putString(key("route"), route).commit();
 	}
 	
+	public String getDns() {
+		return mPref.getString(key("dns"), "8.8.8.8");
+	}
+	
+	public void setDns(String dns) {
+		mPref.edit().putString(key("dns"), dns).commit();
+	}
+	
+	public int getDnsPort() {
+		return mPref.getInt(key("dns_port"), 53);
+	}
+	
+	public void setDnsPort(int port) {
+		mPref.edit().putInt(key("dns_port"), port).commit();
+	}
+	
 	void delete() {
 		mPref.edit()
 			.remove(key("server"))
@@ -78,6 +94,8 @@ public class Profile {
 			.remove(key("username"))
 			.remove(key("password"))
 			.remove(key("route"))
+			.remove(key("dns"))
+			.remove(key("dns_port"))
 			.commit();
 	}
 	

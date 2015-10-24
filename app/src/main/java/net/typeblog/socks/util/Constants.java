@@ -15,7 +15,9 @@ public class Constants
 							INTENT_PORT = INTENT_PREFIX + "PORT",
 							INTENT_USERNAME = INTENT_PREFIX + "UNAME",
 							INTENT_PASSWORD = INTENT_PREFIX + "PASSWD",
-							INTENT_ROUTE = INTENT_PREFIX + "ROUTE";
+							INTENT_ROUTE = INTENT_PREFIX + "ROUTE",
+							INTENT_DNS = INTENT_PREFIX + "DNS",
+							INTENT_DNS_PORT = INTENT_PREFIX + "DNSPORT";
 	
 	public static final String PREF = "profile",
 							PREF_PROFILE = "profile",
@@ -25,5 +27,7 @@ public class Constants
 							PREF_AUTH_USERPW = "auth_userpw",
 							PREF_AUTH_USERNAME = "auth_username",
 							PREF_AUTH_PASSWORD = "auth_password",
-							PREF_ADV_ROUTE = "adv_route";
+							PREF_ADV_ROUTE = "adv_route",
+							PREF_ADV_DNS = "adv_dns",
+							PREF_ADV_DNS_PORT = "adv_dns_port";
 }

@@ -19,6 +19,8 @@
 	<string name="adv_route">Route</string>
 	<string name="adv_route_all">All (Default)</string>
 	<string name="adv_route_non_chn">Non-Chinese IPs</string>
+	<string name="adv_dns">DNS Server</string>
+	<string name="adv_dns_port">DNS Port (TCP)</string>
 	
 	<string name="prof_add">Add profile</string>
 	<string name="prof_del">Delete profile</string>

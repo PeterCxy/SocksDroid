@@ -50,7 +50,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 	private SocksVpnService.VpnBinder mBinder;
 	
 	private ListPreference mPrefProfile, mPrefRoutes;
-	private EditTextPreference mPrefServer, mPrefPort, mPrefUsername, mPrefPassword;
+	private EditTextPreference mPrefServer, mPrefPort, mPrefUsername, mPrefPassword,
+					mPrefDns, mPrefDnsPort;
 	private CheckBoxPreference mPrefUserpw;
 	
 	@Override
@@ -128,6 +129,17 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 			mProfile.setRoute(newValue.toString());
 			resetListN(mPrefRoutes, newValue);
 			return true;
+		} else if (p == mPrefDns) {
+			mProfile.setDns(newValue.toString());
+			resetTextN(mPrefDns, newValue);
+			return true;
+		} else if (p == mPrefDnsPort) {
+			if (TextUtils.isEmpty(newValue.toString()))
+				return false;
+			
+			mProfile.setDnsPort(Integer.valueOf(newValue.toString()));
+			resetTextN(mPrefDnsPort, newValue);
+			return true;
 		} else {
 			return false;
 		}
@@ -151,7 +163,9 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 				.putExtra(INTENT_NAME, mProfile.getName())
 				.putExtra(INTENT_SERVER, mProfile.getServer())
 				.putExtra(INTENT_PORT, mProfile.getPort())
-				.putExtra(INTENT_ROUTE, mProfile.getRoute());
+				.putExtra(INTENT_ROUTE, mProfile.getRoute())
+				.putExtra(INTENT_DNS, mProfile.getDns())
+				.putExtra(INTENT_DNS_PORT, mProfile.getDnsPort());
 			
 			if (mProfile.isUserPw()) {
 				i.putExtra(INTENT_USERNAME, mProfile.getUsername())
@@ -172,6 +186,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefUsername = (EditTextPreference) findPreference(PREF_AUTH_USERNAME);
 		mPrefPassword = (EditTextPreference) findPreference(PREF_AUTH_PASSWORD);
 		mPrefRoutes = (ListPreference) findPreference(PREF_ADV_ROUTE);
+		mPrefDns = (EditTextPreference) findPreference(PREF_ADV_DNS);
+		mPrefDnsPort = (EditTextPreference) findPreference(PREF_ADV_DNS_PORT);
 		
 		mPrefProfile.setOnPreferenceChangeListener(this);
 		mPrefServer.setOnPreferenceChangeListener(this);
@@ -180,6 +196,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefUsername.setOnPreferenceChangeListener(this);
 		mPrefPassword.setOnPreferenceChangeListener(this);
 		mPrefRoutes.setOnPreferenceChangeListener(this);
+		mPrefDns.setOnPreferenceChangeListener(this);
+		mPrefDnsPort.setOnPreferenceChangeListener(this);
 	}
 	
 	private void reload() {
@@ -199,7 +217,9 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefPort.setText(String.valueOf(mProfile.getPort()));
 		mPrefUsername.setText(mProfile.getUsername());
 		mPrefPassword.setText(mProfile.getPassword());
-		resetText(mPrefServer, mPrefPort, mPrefUsername, mPrefPassword);
+		mPrefDns.setText(mProfile.getDns());
+		mPrefDnsPort.setText(String.valueOf(mProfile.getDnsPort()));
+		resetText(mPrefServer, mPrefPort, mPrefUsername, mPrefPassword, mPrefDns, mPrefDnsPort);
 	}
 	
 	private void resetList(ListPreference... pref) {

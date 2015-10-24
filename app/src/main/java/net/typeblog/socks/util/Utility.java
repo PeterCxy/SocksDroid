@@ -152,8 +152,8 @@ public class Utility {
 		return ret.substring(0, ret.length() - separator.length());
 	}
 	
-	public static void makePdnsdConf(Context context, String dns) {
-		String conf = String.format(context.getString(R.string.pdnsd_conf), dns);
+	public static void makePdnsdConf(Context context, String dns, int port) {
+		String conf = String.format(context.getString(R.string.pdnsd_conf), dns, port);
 		
 		File f = new File(DIR + "/pdnsd.conf");
 		

@@ -17,6 +17,7 @@ global {
 server {
 	label= "upstream";
 	ip = %s;
+	port = %d;
 	uptest = none;
 }
 

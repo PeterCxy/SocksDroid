@@ -39,6 +39,8 @@ public class SocksVpnService extends VpnService {
 		final String username = intent.getStringExtra(INTENT_USERNAME);
 		final String passwd = intent.getStringExtra(INTENT_PASSWORD);
 		final String route = intent.getStringExtra(INTENT_ROUTE);
+		final String dns = intent.getStringExtra(INTENT_DNS);
+		final int dnsPort = intent.getIntExtra(INTENT_DNS_PORT, 53);
 		
 		// Create an fd.
 		configure(name, route);
@@ -47,7 +49,7 @@ public class SocksVpnService extends VpnService {
 			Log.d(TAG, "fd: " + mInterface.getFd());
 		
 		if (mInterface != null)
-			start(mInterface.getFd(), server, port, username, passwd, "8.8.8.8");
+			start(mInterface.getFd(), server, port, username, passwd, dns, dnsPort);
 		
 		return START_STICKY;
 	}
@@ -106,9 +108,9 @@ public class SocksVpnService extends VpnService {
 		}
 	}
 
-	private void start(int fd, String server, int port, String user, String passwd, String dns) {
+	private void start(int fd, String server, int port, String user, String passwd, String dns, int dnsPort) {
 		// Start DNS daemon first
-		Utility.makePdnsdConf(this, dns);
+		Utility.makePdnsdConf(this, dns, dnsPort);
 		
 		Utility.exec(String.format("%s/pdnsd -c %s/pdnsd.conf", DIR, DIR));
 		

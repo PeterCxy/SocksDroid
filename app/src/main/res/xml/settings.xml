@@ -49,6 +49,15 @@
 			android:entries="@array/adv_routes"
 			android:entryValues="@array/adv_routes_values"/>
 		
+		<EditTextPreference
+			android:key="adv_dns"
+			android:title="@string/adv_dns"/>
+		
+		<EditTextPreference
+			android:key="adv_dns_port"
+			android:title="@string/adv_dns_port"
+			android:inputType="number"/>
+		
 	</PreferenceCategory>
 	
 </PreferenceScreen>

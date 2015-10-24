@@ -45,7 +45,9 @@
 		
 		<ListPreference
 			android:key="adv_route"
-			android:title="@string/adv_route"/>
+			android:title="@string/adv_route"
+			android:entries="@array/adv_routes"
+			android:entryValues="@array/adv_routes_values"/>
 		
 	</PreferenceCategory>
 	

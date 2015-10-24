@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
+import net.typeblog.socks.util.Routes;
 import net.typeblog.socks.util.Utility;
 import static net.typeblog.socks.util.Constants.*;
 import static net.typeblog.socks.BuildConfig.DEBUG;
@@ -37,9 +38,10 @@ public class SocksVpnService extends VpnService {
 		final int port = intent.getIntExtra(INTENT_PORT, 1080);
 		final String username = intent.getStringExtra(INTENT_USERNAME);
 		final String passwd = intent.getStringExtra(INTENT_PASSWORD);
+		final String route = intent.getStringExtra(INTENT_ROUTE);
 		
 		// Create an fd.
-		configure(name);
+		configure(name, route);
 		
 		if (DEBUG)
 			Log.d(TAG, "fd: " + mInterface.getFd());
@@ -81,17 +83,24 @@ public class SocksVpnService extends VpnService {
 		stopSelf();
 	}
 	
-	private void configure(String name) {
+	private void configure(String name, String route) {
 		Builder b = new Builder();
 		try {
-			mInterface = b.setMtu(1500)
+			b.setMtu(1500)
 			 .setSession(name)
 			 .addAddress("26.26.26.1", 24)
-			 .addRoute("0.0.0.0", 0)
 			 .addDnsServer("8.8.8.8")
 			 .addDisallowedApplication("net.typeblog.socks")
-			 .addDisallowedApplication("net.typeblog.stunnel")
-			 .establish();
+			 .addDisallowedApplication("net.typeblog.stunnel");
+			 
+			Routes.addRoutes(this, b, route);
+			
+			// Add the default DNS
+			// Note that this DNS is just a stub.
+			// Actual DNS requests will be redirected through pdnsd.
+			b.addRoute("8.8.8.8", 32);
+			
+			mInterface = b.establish();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

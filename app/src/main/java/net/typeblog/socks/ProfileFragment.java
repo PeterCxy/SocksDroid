@@ -49,7 +49,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 	};
 	private SocksVpnService.VpnBinder mBinder;
 	
-	private ListPreference mPrefProfile;
+	private ListPreference mPrefProfile, mPrefRoutes;
 	private EditTextPreference mPrefServer, mPrefPort, mPrefUsername, mPrefPassword;
 	private CheckBoxPreference mPrefUserpw;
 	
@@ -124,6 +124,10 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 			mProfile.setPassword(newValue.toString());
 			resetTextN(mPrefPassword, newValue);
 			return true;
+		} else if (p == mPrefRoutes) {
+			mProfile.setRoute(newValue.toString());
+			resetListN(mPrefRoutes, newValue);
+			return true;
 		} else {
 			return false;
 		}
@@ -146,7 +150,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 			Intent i = new Intent(getActivity(), SocksVpnService.class)
 				.putExtra(INTENT_NAME, mProfile.getName())
 				.putExtra(INTENT_SERVER, mProfile.getServer())
-				.putExtra(INTENT_PORT, mProfile.getPort());
+				.putExtra(INTENT_PORT, mProfile.getPort())
+				.putExtra(INTENT_ROUTE, mProfile.getRoute());
 			
 			if (mProfile.isUserPw()) {
 				i.putExtra(INTENT_USERNAME, mProfile.getUsername())
@@ -166,6 +171,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefUserpw = (CheckBoxPreference) findPreference(PREF_AUTH_USERPW);
 		mPrefUsername = (EditTextPreference) findPreference(PREF_AUTH_USERNAME);
 		mPrefPassword = (EditTextPreference) findPreference(PREF_AUTH_PASSWORD);
+		mPrefRoutes = (ListPreference) findPreference(PREF_ADV_ROUTE);
 		
 		mPrefProfile.setOnPreferenceChangeListener(this);
 		mPrefServer.setOnPreferenceChangeListener(this);
@@ -173,6 +179,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefUserpw.setOnPreferenceChangeListener(this);
 		mPrefUsername.setOnPreferenceChangeListener(this);
 		mPrefPassword.setOnPreferenceChangeListener(this);
+		mPrefRoutes.setOnPreferenceChangeListener(this);
 	}
 	
 	private void reload() {
@@ -183,7 +190,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefProfile.setEntries(mManager.getProfiles());
 		mPrefProfile.setEntryValues(mManager.getProfiles());
 		mPrefProfile.setValue(mProfile.getName());
-		resetList(mPrefProfile);
+		mPrefRoutes.setValue(mProfile.getRoute());
+		resetList(mPrefProfile, mPrefRoutes);
 		
 		mPrefUserpw.setChecked(mProfile.isUserPw());
 		
@@ -192,12 +200,15 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefUsername.setText(mProfile.getUsername());
 		mPrefPassword.setText(mProfile.getPassword());
 		resetText(mPrefServer, mPrefPort, mPrefUsername, mPrefPassword);
-		
 	}
 	
 	private void resetList(ListPreference... pref) {
 		for (ListPreference p : pref)
 			p.setSummary(p.getEntry());
+	}
+	
+	private void resetListN(ListPreference pref, Object newValue) {
+		pref.setSummary(newValue.toString());
 	}
 	
 	private void resetText(EditTextPreference... pref) {

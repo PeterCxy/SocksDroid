@@ -3,6 +3,8 @@ package net.typeblog.socks.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import static net.typeblog.socks.util.Constants.*;
+
 public class Profile {
 	private Context mContext;
 	private SharedPreferences mPref;
@@ -60,6 +62,14 @@ public class Profile {
 		mPref.edit().putString(key("password"), password).commit();
 	}
 	
+	public String getRoute() {
+		return mPref.getString(key("route"), ROUTE_ALL);
+	}
+	
+	public void setRoute(String route) {
+		mPref.edit().putString(key("route"), route).commit();
+	}
+	
 	void delete() {
 		mPref.edit()
 			.remove(key("server"))
@@ -67,6 +77,7 @@ public class Profile {
 			.remove(key("userpw"))
 			.remove(key("username"))
 			.remove(key("password"))
+			.remove(key("route"))
 			.commit();
 	}
 	

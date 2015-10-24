@@ -86,6 +86,30 @@ public class Profile {
 		mPref.edit().putInt(key("dns_port"), port).commit();
 	}
 	
+	public boolean isPerApp() {
+		return mPref.getBoolean(key("perapp"), false);
+	}
+	
+	public void setIsPerApp(boolean is) {
+		mPref.edit().putBoolean(key("perapp"), is).commit();
+	}
+	
+	public boolean isBypassApp() {
+		return mPref.getBoolean(key("appbypass"), false);
+	}
+	
+	public void setIsBypassApp(boolean is) {
+		mPref.edit().putBoolean(key("appbypass"), is).commit();
+	}
+	
+	public String getAppList() {
+		return mPref.getString(key("applist"), "");
+	}
+	
+	public void setAppList(String list) {
+		mPref.edit().putString(key("applist"), list).commit();
+	}
+	
 	void delete() {
 		mPref.edit()
 			.remove(key("server"))
@@ -96,6 +120,9 @@ public class Profile {
 			.remove(key("route"))
 			.remove(key("dns"))
 			.remove(key("dns_port"))
+			.remove(key("perapp"))
+			.remove(key("appbypass"))
+			.remove(key("applist"))
 			.commit();
 	}
 	

@@ -51,8 +51,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 	
 	private ListPreference mPrefProfile, mPrefRoutes;
 	private EditTextPreference mPrefServer, mPrefPort, mPrefUsername, mPrefPassword,
-					mPrefDns, mPrefDnsPort;
-	private CheckBoxPreference mPrefUserpw;
+					mPrefDns, mPrefDnsPort, mPrefAppList;
+	private CheckBoxPreference mPrefUserpw, mPrefPerApp, mPrefAppBypass;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -140,6 +140,15 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 			mProfile.setDnsPort(Integer.valueOf(newValue.toString()));
 			resetTextN(mPrefDnsPort, newValue);
 			return true;
+		} else if (p == mPrefPerApp) {
+			mProfile.setIsPerApp(Boolean.parseBoolean(newValue.toString()));
+			return true;
+		} else if (p == mPrefAppBypass) {
+			mProfile.setIsBypassApp(Boolean.parseBoolean(newValue.toString()));
+			return true;
+		} else if (p == mPrefAppList) {
+			mProfile.setAppList(newValue.toString());
+			return true;
 		} else {
 			return false;
 		}
@@ -165,11 +174,17 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 				.putExtra(INTENT_PORT, mProfile.getPort())
 				.putExtra(INTENT_ROUTE, mProfile.getRoute())
 				.putExtra(INTENT_DNS, mProfile.getDns())
-				.putExtra(INTENT_DNS_PORT, mProfile.getDnsPort());
+				.putExtra(INTENT_DNS_PORT, mProfile.getDnsPort())
+				.putExtra(INTENT_PER_APP, mProfile.isPerApp());
 			
 			if (mProfile.isUserPw()) {
 				i.putExtra(INTENT_USERNAME, mProfile.getUsername())
 					.putExtra(INTENT_PASSWORD, mProfile.getPassword());
+			}
+			
+			if (mProfile.isPerApp()) {
+				i.putExtra(INTENT_APP_BYPASS, mProfile.isBypassApp())
+					.putExtra(INTENT_APP_LIST, mProfile.getAppList().split("\n"));
 			}
 			
 			getActivity().startService(i);
@@ -188,6 +203,9 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefRoutes = (ListPreference) findPreference(PREF_ADV_ROUTE);
 		mPrefDns = (EditTextPreference) findPreference(PREF_ADV_DNS);
 		mPrefDnsPort = (EditTextPreference) findPreference(PREF_ADV_DNS_PORT);
+		mPrefPerApp = (CheckBoxPreference) findPreference(PREF_ADV_PER_APP);
+		mPrefAppBypass = (CheckBoxPreference) findPreference(PREF_ADV_APP_BYPASS);
+		mPrefAppList = (EditTextPreference) findPreference(PREF_ADV_APP_LIST);
 		
 		mPrefProfile.setOnPreferenceChangeListener(this);
 		mPrefServer.setOnPreferenceChangeListener(this);
@@ -198,6 +216,9 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefRoutes.setOnPreferenceChangeListener(this);
 		mPrefDns.setOnPreferenceChangeListener(this);
 		mPrefDnsPort.setOnPreferenceChangeListener(this);
+		mPrefPerApp.setOnPreferenceChangeListener(this);
+		mPrefAppBypass.setOnPreferenceChangeListener(this);
+		mPrefAppList.setOnPreferenceChangeListener(this);
 	}
 	
 	private void reload() {
@@ -212,6 +233,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		resetList(mPrefProfile, mPrefRoutes);
 		
 		mPrefUserpw.setChecked(mProfile.isUserPw());
+		mPrefPerApp.setChecked(mProfile.isPerApp());
+		mPrefAppBypass.setChecked(mProfile.isBypassApp());
 		
 		mPrefServer.setText(mProfile.getServer());
 		mPrefPort.setText(String.valueOf(mProfile.getPort()));
@@ -220,6 +243,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefDns.setText(mProfile.getDns());
 		mPrefDnsPort.setText(String.valueOf(mProfile.getDnsPort()));
 		resetText(mPrefServer, mPrefPort, mPrefUsername, mPrefPassword, mPrefDns, mPrefDnsPort);
+		
+		mPrefAppList.setText(mProfile.getAppList());
 	}
 	
 	private void resetList(ListPreference... pref) {

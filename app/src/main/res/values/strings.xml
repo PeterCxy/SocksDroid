@@ -21,6 +21,11 @@
 	<string name="adv_route_non_chn">Non-Chinese IPs</string>
 	<string name="adv_dns">DNS Server</string>
 	<string name="adv_dns_port">DNS Port (TCP)</string>
+	<string name="adv_per_app">Per-app proxy</string>
+	<string name="adv_app_bypass">Bypass apps</string>
+	<string name="adv_app_bypass_sum">If not selected, only the following list of apps are allowed to use the proxy; if selected, all apps except listed below are allowed to use the proxy.</string>
+	<string name="adv_app_list">App list</string>
+	<string name="adv_app_list_sum">Enter one app\'s package name in one line. Consult Settings -> Apps for package names of apps.</string>
 	
 	<string name="prof_add">Add profile</string>
 	<string name="prof_del">Delete profile</string>

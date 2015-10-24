@@ -17,7 +17,10 @@ public class Constants
 							INTENT_PASSWORD = INTENT_PREFIX + "PASSWD",
 							INTENT_ROUTE = INTENT_PREFIX + "ROUTE",
 							INTENT_DNS = INTENT_PREFIX + "DNS",
-							INTENT_DNS_PORT = INTENT_PREFIX + "DNSPORT";
+							INTENT_DNS_PORT = INTENT_PREFIX + "DNSPORT",
+							INTENT_PER_APP = INTENT_PREFIX + "PERAPP",
+							INTENT_APP_BYPASS = INTENT_PREFIX + "APPBYPASS",
+							INTENT_APP_LIST = INTENT_PREFIX + "APPLIST";
 	
 	public static final String PREF = "profile",
 							PREF_PROFILE = "profile",
@@ -29,5 +32,8 @@ public class Constants
 							PREF_AUTH_PASSWORD = "auth_password",
 							PREF_ADV_ROUTE = "adv_route",
 							PREF_ADV_DNS = "adv_dns",
-							PREF_ADV_DNS_PORT = "adv_dns_port";
+							PREF_ADV_DNS_PORT = "adv_dns_port",
+							PREF_ADV_PER_APP = "adv_per_app",
+							PREF_ADV_APP_BYPASS = "adv_app_bypass",
+							PREF_ADV_APP_LIST = "adv_app_list";
 }

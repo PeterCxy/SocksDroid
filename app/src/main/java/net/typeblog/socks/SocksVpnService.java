@@ -6,6 +6,7 @@ import android.net.VpnService.Builder;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
+import android.text.TextUtils;
 import android.util.Log;
 
 import net.typeblog.socks.util.Routes;
@@ -41,9 +42,12 @@ public class SocksVpnService extends VpnService {
 		final String route = intent.getStringExtra(INTENT_ROUTE);
 		final String dns = intent.getStringExtra(INTENT_DNS);
 		final int dnsPort = intent.getIntExtra(INTENT_DNS_PORT, 53);
+		final boolean perApp = intent.getBooleanExtra(INTENT_PER_APP, false);
+		final boolean appBypass = intent.getBooleanExtra(INTENT_APP_BYPASS, false);
+		final String[] appList = intent.getStringArrayExtra(INTENT_APP_LIST);
 		
 		// Create an fd.
-		configure(name, route);
+		configure(name, route, perApp, appBypass, appList);
 		
 		if (DEBUG)
 			Log.d(TAG, "fd: " + mInterface.getFd());
@@ -85,27 +89,63 @@ public class SocksVpnService extends VpnService {
 		stopSelf();
 	}
 	
-	private void configure(String name, String route) {
+	private void configure(String name, String route, boolean perApp, boolean bypass, String[] apps) {
 		Builder b = new Builder();
-		try {
-			b.setMtu(1500)
-			 .setSession(name)
-			 .addAddress("26.26.26.1", 24)
-			 .addDnsServer("8.8.8.8")
-			 .addDisallowedApplication("net.typeblog.socks")
-			 .addDisallowedApplication("net.typeblog.stunnel");
-			 
-			Routes.addRoutes(this, b, route);
+		b.setMtu(1500)
+			.setSession(name)
+			.addAddress("26.26.26.1", 24)
+			.addDnsServer("8.8.8.8");
 			
-			// Add the default DNS
-			// Note that this DNS is just a stub.
-			// Actual DNS requests will be redirected through pdnsd.
-			b.addRoute("8.8.8.8", 32);
+		Routes.addRoutes(this, b, route);
 			
-			mInterface = b.establish();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		// Add the default DNS
+		// Note that this DNS is just a stub.
+		// Actual DNS requests will be redirected through pdnsd.
+		b.addRoute("8.8.8.8", 32);
+		
+		// Do app routing
+		if (!perApp) {
+			// Just bypass myself
+			try {
+				b.addDisallowedApplication("net.typeblog.socks");
+			} catch (Exception e) {
+				
+			}
+		} else {
+			if (bypass) {
+				// First, bypass myself
+				try {
+					b.addDisallowedApplication("net.typeblog.socks");
+				} catch (Exception e) {
+
+				}
+				
+				for (String p : apps) {
+					if (TextUtils.isEmpty(p))
+						continue;
+					
+					try {
+						b.addDisallowedApplication(p.trim());
+					} catch (Exception e) {
+						
+					}
+				}
+			} else {
+				for (String p : apps) {
+					if (TextUtils.isEmpty(p) || p.trim().equals("net.typeblog.socks")) {
+						continue;
+					}
+					
+					try {
+						b.addAllowedApplication(p.trim());
+					} catch (Exception e) {
+						
+					}
+				}
+			}
 		}
+			
+		mInterface = b.establish();
 	}
 
 	private void start(int fd, String server, int port, String user, String passwd, String dns, int dnsPort) {

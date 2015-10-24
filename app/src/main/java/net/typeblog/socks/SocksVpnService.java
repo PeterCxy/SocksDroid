@@ -129,6 +129,7 @@ public class SocksVpnService extends VpnService {
 			return;
 		}
 		
+		// Try to send the Fd through socket.
 		int i = 0;
 		while (i < 5) {
 			if (System.sendfd(fd) != -1) {
@@ -137,6 +138,12 @@ public class SocksVpnService extends VpnService {
 			}
 			
 			i++;
+			
+			try {
+				Thread.sleep(1000 * i);
+			} catch (Exception e) {
+				
+			}
 		}
 		
 		// Should not get here. Must be a failure.

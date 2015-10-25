@@ -1,5 +1,6 @@
 package net.typeblog.socks;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.net.VpnService;
 import android.net.VpnService.Builder;
@@ -9,6 +10,7 @@ import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import android.util.Log;
 
+import net.typeblog.socks.R;
 import net.typeblog.socks.util.Routes;
 import net.typeblog.socks.util.Utility;
 import static net.typeblog.socks.util.Constants.*;
@@ -52,6 +54,15 @@ public class SocksVpnService extends VpnService {
 		final boolean ipv6 = intent.getBooleanExtra(INTENT_IPV6_PROXY, false);
 		final String udpgw = intent.getStringExtra(INTENT_UDP_GW);
 		
+		// Create the notification
+		startForeground(R.drawable.ic_launcher,
+			new Notification.Builder(this)
+				.setContentTitle(getString(R.string.notify_title))
+				.setContentText(String.format(getString(R.string.notify_msg), name))
+				.setPriority(Notification.PRIORITY_MIN)
+				.setSmallIcon(android.R.color.transparent)
+				.build());
+		
 		// Create an fd.
 		configure(name, route, perApp, appBypass, appList, ipv6);
 		
@@ -83,6 +94,8 @@ public class SocksVpnService extends VpnService {
 	}
 	
 	private void stopMe() {
+		stopForeground(true);
+		
 		Utility.killPidFile(DIR + "/tun2socks.pid");
 		Utility.killPidFile(DIR + "/pdnsd.pid");
 		

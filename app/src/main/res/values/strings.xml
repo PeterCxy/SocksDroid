@@ -40,5 +40,7 @@
 	
 	<string name="err_add_prof">Failed to add profile %s</string>
 	<string name="err_del_prof">Error deleting profile %s</string>
+	<string name="notify_title">SOCKS5 proxy activated</string>
+	<string name="notify_msg">Connected to ｢%s｣</string>
 	
 </resources>

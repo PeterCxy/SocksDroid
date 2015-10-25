@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 import net.typeblog.socks.R;
+import net.typeblog.socks.System;
 import static net.typeblog.socks.BuildConfig.DEBUG;
 import static net.typeblog.socks.util.Constants.*;
 
@@ -36,7 +37,11 @@ public class Utility {
 			return;
 		}
 		
-		String target = DIR;
+		String target = System.getABI();
+		
+		if (DEBUG) {
+			Log.d(TAG, "target = " + target);
+		}
 		
 		if (new File(target + "/tun2socks").exists()) {
 			new File(target + "/tun2socks").delete();

@@ -2309,14 +2309,14 @@ void udpgw_client_handler_received (void *unused, BAddr local_addr, BAddr remote
         } break;
 
         case BADDR_TYPE_IPV6: {
-#ifdef ANDROID
+#ifdef ANDROID_UDP
             BLog(BLOG_INFO, "UDP/IPv6: from udprelay %d bytes", data_len);
 #else
             BLog(BLOG_INFO, "UDP/IPv6: from udpgw %d bytes", data_len);
 #endif
 
             if (!options.netif_ip6addr) {
-#ifdef ANDROID
+#ifdef ANDROID_UDP
                 BLog(BLOG_ERROR, "got IPv6 packet from udprelay but IPv6 is disabled");
 #else
                 BLog(BLOG_ERROR, "got IPv6 packet from udpgw but IPv6 is disabled");

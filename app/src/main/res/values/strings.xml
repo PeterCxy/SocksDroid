@@ -13,7 +13,7 @@
 	<string name="ipv6_proxy_sum">Enable IPv6 forwarding. If the server supports IPv6, you can access IPv6 contents from IPv4 network with this enabled.</string>
 	
 	<string name="authentication">Authentication</string>
-	<string name="auth_userpw">Username & Password Authentication</string>
+	<string name="auth_userpw">Username &amp; Password Authentication</string>
 	<string name="auth_username">Username</string>
 	<string name="auth_password">Password</string>
 	

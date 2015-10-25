@@ -5,7 +5,10 @@ rm -rf ../../libs
 
 ndk-build
 
-mkdir -p assets/armeabi-v7a
-cp libs/armeabi-v7a/{tun2socks,pdnsd} assets/armeabi-v7a/
+for p in armeabi-v7a arm64-v8a x86 mips; do
+	mkdir -p assets/$p
+	cp libs/$p/{tun2socks,pdnsd} assets/$p/
+done
+
 rm -rf libs/*/{tun2socks,pdnsd}
 mv libs ../../

@@ -33,6 +33,8 @@ jstring Java_net_typeblog_socks_system_getabi(JNIEnv *env, jobject thiz) {
     // } else {
     //   abi = "armeabi";
     // }
+  } else if (family == ANDROID_CPU_FAMILY_ARM64) {
+  	abi = "arm64-v8a";
   }
   return env->NewStringUTF(abi);
 }

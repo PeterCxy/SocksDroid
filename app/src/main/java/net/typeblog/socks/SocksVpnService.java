@@ -45,15 +45,16 @@ public class SocksVpnService extends VpnService {
 		final boolean perApp = intent.getBooleanExtra(INTENT_PER_APP, false);
 		final boolean appBypass = intent.getBooleanExtra(INTENT_APP_BYPASS, false);
 		final String[] appList = intent.getStringArrayExtra(INTENT_APP_LIST);
+		final boolean ipv6 = intent.getBooleanExtra(INTENT_IPV6_PROXY, false);
 		
 		// Create an fd.
-		configure(name, route, perApp, appBypass, appList);
+		configure(name, route, perApp, appBypass, appList, ipv6);
 		
 		if (DEBUG)
 			Log.d(TAG, "fd: " + mInterface.getFd());
 		
 		if (mInterface != null)
-			start(mInterface.getFd(), server, port, username, passwd, dns, dnsPort);
+			start(mInterface.getFd(), server, port, username, passwd, dns, dnsPort, ipv6);
 		
 		return START_STICKY;
 	}
@@ -89,12 +90,18 @@ public class SocksVpnService extends VpnService {
 		stopSelf();
 	}
 	
-	private void configure(String name, String route, boolean perApp, boolean bypass, String[] apps) {
+	private void configure(String name, String route, boolean perApp, boolean bypass, String[] apps, boolean ipv6) {
 		Builder b = new Builder();
 		b.setMtu(1500)
 			.setSession(name)
 			.addAddress("26.26.26.1", 24)
 			.addDnsServer("8.8.8.8");
+		
+		if (ipv6) {
+			// Route all IPv6 traffic
+			b.addAddress("fdfe:dcba:9876::1", 126)
+				.addRoute("::", 0);
+		}
 			
 		Routes.addRoutes(this, b, route);
 			
@@ -148,7 +155,7 @@ public class SocksVpnService extends VpnService {
 		mInterface = b.establish();
 	}
 
-	private void start(int fd, String server, int port, String user, String passwd, String dns, int dnsPort) {
+	private void start(int fd, String server, int port, String user, String passwd, String dns, int dnsPort, boolean ipv6) {
 		// Start DNS daemon first
 		Utility.makePdnsdConf(this, dns, dnsPort);
 		
@@ -167,6 +174,10 @@ public class SocksVpnService extends VpnService {
 		if (user != null) {
 			command += " --username " + user;
 			command += " --password " + passwd;
+		}
+		
+		if (ipv6) {
+			command += " --netif-ip6addr fdfe:dcba:9876::2";
 		}
 		
 		command += " --dnsgw 26.26.26.1:8091";

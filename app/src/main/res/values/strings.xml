@@ -9,6 +9,8 @@
 	<string name="connection">Connection</string>
 	<string name="server_ip">Server IP</string>
 	<string name="server_port">Server Port</string>
+	<string name="ipv6_proxy">IPv6</string>
+	<string name="ipv6_proxy_sum">Enable IPv6 forwarding. If the server supports IPv6, you can access IPv6 contents from IPv4 network with this enabled.</string>
 	
 	<string name="authentication">Authentication</string>
 	<string name="auth_userpw">Username / Password</string>

@@ -20,13 +20,15 @@ public class Constants
 							INTENT_DNS_PORT = INTENT_PREFIX + "DNSPORT",
 							INTENT_PER_APP = INTENT_PREFIX + "PERAPP",
 							INTENT_APP_BYPASS = INTENT_PREFIX + "APPBYPASS",
-							INTENT_APP_LIST = INTENT_PREFIX + "APPLIST";
+							INTENT_APP_LIST = INTENT_PREFIX + "APPLIST",
+							INTENT_IPV6_PROXY = INTENT_PREFIX + "IPV6";
 	
 	public static final String PREF = "profile",
 							PREF_PROFILE = "profile",
 							PREF_LAST_PROFILE = "last_profile",
 							PREF_SERVER_IP = "server_ip",
 							PREF_SERVER_PORT = "server_port",
+							PREF_IPV6_PROXY = "ipv6_proxy",
 							PREF_AUTH_USERPW = "auth_userpw",
 							PREF_AUTH_USERNAME = "auth_username",
 							PREF_AUTH_PASSWORD = "auth_password",

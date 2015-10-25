@@ -110,6 +110,14 @@ public class Profile {
 		mPref.edit().putString(key("applist"), list).commit();
 	}
 	
+	public boolean hasIPv6() {
+		return mPref.getBoolean(key("ipv6"), false);
+	}
+	
+	public void setHasIPv6(boolean has) {
+		mPref.edit().putBoolean(key("ipv6"), has).commit();
+	}
+	
 	void delete() {
 		mPref.edit()
 			.remove(key("server"))
@@ -123,6 +131,7 @@ public class Profile {
 			.remove(key("perapp"))
 			.remove(key("appbypass"))
 			.remove(key("applist"))
+			.remove(key("ipv6"))
 			.commit();
 	}
 	

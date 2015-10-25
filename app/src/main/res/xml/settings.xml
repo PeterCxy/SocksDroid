@@ -19,6 +19,11 @@
 			android:inputType="number"
 			android:singleLine="true"/>
 		
+		<CheckBoxPreference
+			android:key="ipv6_proxy"
+			android:title="@string/ipv6_proxy"
+			android:summary="@string/ipv6_proxy_sum"/>
+		
 	</PreferenceCategory>
 	
 	<PreferenceCategory

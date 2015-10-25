@@ -36,12 +36,21 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 	
 	private Switch mSwitch;
 	private boolean mRunning = false;
+	private boolean mStarting = false, mStopping = false;
 	private ServiceConnection mConnection = new ServiceConnection() {
 		@Override
 		public void onServiceConnected(ComponentName p1, IBinder binder) {
-			mRunning = ((SocksVpnService.VpnBinder) binder).isRunning();
-			mBinder = (SocksVpnService.VpnBinder) binder;
-			updateState();
+			mBinder = IVpnService.Stub.asInterface(binder);
+			
+			try {
+				mRunning = mBinder.isRunning();
+			} catch (Exception e) {
+				
+			}
+			
+			if (mRunning) {
+				updateState();
+			}
 		}
 
 		@Override
@@ -53,9 +62,10 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		@Override
 		public void run() {
 			updateState();
+			mSwitch.postDelayed(this, 1000);
 		}
 	};
-	private SocksVpnService.VpnBinder mBinder;
+	private IVpnService mBinder;
 	
 	private ListPreference mPrefProfile, mPrefRoutes;
 	private EditTextPreference mPrefServer, mPrefPort, mPrefUsername, mPrefPassword,
@@ -80,6 +90,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		MenuItem s = menu.findItem(R.id.switch_main);
 		mSwitch = (Switch) s.getActionView().findViewById(R.id.switch_action_button);
 		mSwitch.setOnCheckedChangeListener(this);
+		mSwitch.postDelayed(mStateRunnable, 1000);
 		checkState();
 	}
 
@@ -361,19 +372,38 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mSwitch.setEnabled(false);
 		mSwitch.setOnCheckedChangeListener(null);
 		getActivity().bindService(new Intent(getActivity(), SocksVpnService.class), mConnection, 0);
-		
-		// Wait for 3 secs
-		mSwitch.postDelayed(mStateRunnable, 3000);
 	}
 	
 	private void updateState() {
+		if (mBinder == null) {
+			mRunning = false;
+		} else {
+			try {
+				mRunning = mBinder.isRunning();
+			} catch (Exception e) {
+				
+			}
+		}
+		
 		mSwitch.setChecked(mRunning);
-		mSwitch.setEnabled(true);
+		
+		if ((!mStarting && !mStopping) || (mStarting && mRunning) || (mStopping && !mRunning)) {
+			mSwitch.setEnabled(true);
+		}
+		
+		if (mStarting && mRunning) {
+			mStarting = false;
+		}
+		
+		if (mStopping && !mRunning) {
+			mStopping = false;
+		}
+		
 		mSwitch.setOnCheckedChangeListener(ProfileFragment.this);
-		mSwitch.removeCallbacks(mStateRunnable);
 	}
 	
 	private void startVpn() {
+		mStarting = true;
 		Intent i = VpnService.prepare(getActivity());
 		
 		if (i != null) {
@@ -387,7 +417,14 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		if (mBinder == null)
 			return;
 		
-		mBinder.stop();
+		mStopping = true;
+			
+		try {
+			mBinder.stop();
+		} catch (Exception e) {
+			
+		}
+		
 		getActivity().unbindService(mConnection);
 		checkState();
 	}

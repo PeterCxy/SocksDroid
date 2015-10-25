@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.content.Intent;
 import android.net.VpnService;
 import android.net.VpnService.Builder;
-import android.os.Binder;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
@@ -17,11 +16,13 @@ import static net.typeblog.socks.util.Constants.*;
 import static net.typeblog.socks.BuildConfig.DEBUG;
 
 public class SocksVpnService extends VpnService {
-	class VpnBinder extends Binder {
+	class VpnBinder extends IVpnService.Stub {
+		@Override
 		public boolean isRunning() {
 			return mRunning;
 		}
 		
+		@Override
 		public void stop() {
 			stopMe();
 		}
@@ -31,7 +32,7 @@ public class SocksVpnService extends VpnService {
 	
 	private ParcelFileDescriptor mInterface;
 	private boolean mRunning = false;
-	private Binder mBinder = new VpnBinder();
+	private IBinder mBinder = new VpnBinder();
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {

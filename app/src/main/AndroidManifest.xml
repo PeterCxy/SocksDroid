@@ -22,7 +22,8 @@
 		
 		<service
 			android:name=".SocksVpnService"
-			android:permission="android.permission.BIND_VPN_SERVICE">
+			android:permission="android.permission.BIND_VPN_SERVICE"
+			android:process=":vpn">
 			<intent-filter>
 				<action android:name="android.net.VpnService"/>
 			</intent-filter>

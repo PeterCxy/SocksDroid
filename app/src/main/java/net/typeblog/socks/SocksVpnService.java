@@ -37,7 +37,15 @@ public class SocksVpnService extends VpnService {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
+		if (DEBUG) {
+			Log.d(TAG, "starting");
+		}
+		
 		if (intent == null) {
+			return 0;
+		}
+		
+		if (mRunning == true) {
 			return 0;
 		}
 		

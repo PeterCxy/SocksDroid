@@ -39,7 +39,7 @@ public class Utility {
 			return;
 		}
 		
-		String target = System.getABI();
+		String target = DIR;
 		
 		if (DEBUG) {
 			Log.d(TAG, "target = " + target);
@@ -55,8 +55,7 @@ public class Utility {
 		
 		new File(target).mkdir();
 		
-		// TODO: ABI detection
-		String source = ABI_DEFAULT;
+		String source = System.getABI();
 		
 		AssetManager m = context.getAssets();
 		

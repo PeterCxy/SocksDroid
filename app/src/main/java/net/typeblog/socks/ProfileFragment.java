@@ -371,7 +371,10 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mRunning = false;
 		mSwitch.setEnabled(false);
 		mSwitch.setOnCheckedChangeListener(null);
-		getActivity().bindService(new Intent(getActivity(), SocksVpnService.class), mConnection, 0);
+		
+		if (mBinder == null) {
+			getActivity().bindService(new Intent(getActivity(), SocksVpnService.class), mConnection, 0);
+		}
 	}
 	
 	private void updateState() {
@@ -381,7 +384,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 			try {
 				mRunning = mBinder.isRunning();
 			} catch (Exception e) {
-				
+				mRunning = false;
 			}
 		}
 		
@@ -424,6 +427,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		} catch (Exception e) {
 			
 		}
+		
+		mBinder = null;
 		
 		getActivity().unbindService(mConnection);
 		checkState();

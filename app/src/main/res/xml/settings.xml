@@ -24,6 +24,17 @@
 			android:title="@string/ipv6_proxy"
 			android:summary="@string/ipv6_proxy_sum"/>
 		
+		<CheckBoxPreference
+			android:key="udp_proxy"
+			android:title="@string/udp_proxy"
+			android:summary="@string/udp_proxy_sum"/>
+		
+		<EditTextPreference
+			android:key="udp_gw"
+			android:title="@string/udp_gw"
+			android:singleLine="true"
+			android:dependency="udp_proxy"/>
+		
 	</PreferenceCategory>
 	
 	<PreferenceCategory

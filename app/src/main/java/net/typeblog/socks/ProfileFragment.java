@@ -51,8 +51,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 	
 	private ListPreference mPrefProfile, mPrefRoutes;
 	private EditTextPreference mPrefServer, mPrefPort, mPrefUsername, mPrefPassword,
-					mPrefDns, mPrefDnsPort, mPrefAppList;
-	private CheckBoxPreference mPrefUserpw, mPrefPerApp, mPrefAppBypass, mPrefIPv6;
+					mPrefDns, mPrefDnsPort, mPrefAppList, mPrefUDPGW;
+	private CheckBoxPreference mPrefUserpw, mPrefPerApp, mPrefAppBypass, mPrefIPv6, mPrefUDP;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -152,6 +152,13 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		} else if (p == mPrefIPv6) {
 			mProfile.setHasIPv6(Boolean.parseBoolean(newValue.toString()));
 			return true;
+		} else if (p == mPrefUDP) {
+			mProfile.setHasUDP(Boolean.parseBoolean(newValue.toString()));
+			return true;
+		} else if (p == mPrefUDPGW) {
+			mProfile.setUDPGW(newValue.toString());
+			resetTextN(mPrefUDPGW, newValue);
+			return true;
 		} else {
 			return false;
 		}
@@ -191,6 +198,10 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 					.putExtra(INTENT_APP_LIST, mProfile.getAppList().split("\n"));
 			}
 			
+			if (mProfile.hasUDP()) {
+				i.putExtra(INTENT_UDP_GW, mProfile.getUDPGW());
+			}
+			
 			getActivity().startService(i);
 			
 			checkState();
@@ -211,6 +222,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefAppBypass = (CheckBoxPreference) findPreference(PREF_ADV_APP_BYPASS);
 		mPrefAppList = (EditTextPreference) findPreference(PREF_ADV_APP_LIST);
 		mPrefIPv6 = (CheckBoxPreference) findPreference(PREF_IPV6_PROXY);
+		mPrefUDP = (CheckBoxPreference) findPreference(PREF_UDP_PROXY);
+		mPrefUDPGW = (EditTextPreference) findPreference(PREF_UDP_GW);
 		
 		mPrefProfile.setOnPreferenceChangeListener(this);
 		mPrefServer.setOnPreferenceChangeListener(this);
@@ -225,6 +238,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefAppBypass.setOnPreferenceChangeListener(this);
 		mPrefAppList.setOnPreferenceChangeListener(this);
 		mPrefIPv6.setOnPreferenceChangeListener(this);
+		mPrefUDP.setOnPreferenceChangeListener(this);
+		mPrefUDPGW.setOnPreferenceChangeListener(this);
 	}
 	
 	private void reload() {
@@ -242,6 +257,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefPerApp.setChecked(mProfile.isPerApp());
 		mPrefAppBypass.setChecked(mProfile.isBypassApp());
 		mPrefIPv6.setChecked(mProfile.hasIPv6());
+		mPrefUDP.setChecked(mProfile.hasUDP());
 		
 		mPrefServer.setText(mProfile.getServer());
 		mPrefPort.setText(String.valueOf(mProfile.getPort()));
@@ -249,7 +265,8 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefPassword.setText(mProfile.getPassword());
 		mPrefDns.setText(mProfile.getDns());
 		mPrefDnsPort.setText(String.valueOf(mProfile.getDnsPort()));
-		resetText(mPrefServer, mPrefPort, mPrefUsername, mPrefPassword, mPrefDns, mPrefDnsPort);
+		mPrefUDPGW.setText(mProfile.getUDPGW());
+		resetText(mPrefServer, mPrefPort, mPrefUsername, mPrefPassword, mPrefDns, mPrefDnsPort, mPrefUDPGW);
 		
 		mPrefAppList.setText(mProfile.getAppList());
 	}

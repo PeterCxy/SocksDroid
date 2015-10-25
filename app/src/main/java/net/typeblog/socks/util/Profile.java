@@ -118,6 +118,22 @@ public class Profile {
 		mPref.edit().putBoolean(key("ipv6"), has).commit();
 	}
 	
+	public boolean hasUDP() {
+		return mPref.getBoolean(key("udp"), false);
+	}
+	
+	public void setHasUDP(boolean has) {
+		mPref.edit().putBoolean(key("udp"), has).commit();
+	}
+	
+	public String getUDPGW() {
+		return mPref.getString(key("udpgw"), "127.0.0.1:7300");
+	}
+	
+	public void setUDPGW(String gw) {
+		mPref.edit().putString(key("udpgw"), gw).commit();
+	}
+	
 	void delete() {
 		mPref.edit()
 			.remove(key("server"))
@@ -132,6 +148,8 @@ public class Profile {
 			.remove(key("appbypass"))
 			.remove(key("applist"))
 			.remove(key("ipv6"))
+			.remove(key("udp"))
+			.remove(key("udpgw"))
 			.commit();
 	}
 	

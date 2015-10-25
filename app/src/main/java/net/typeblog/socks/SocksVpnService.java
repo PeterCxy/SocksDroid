@@ -46,6 +46,7 @@ public class SocksVpnService extends VpnService {
 		final boolean appBypass = intent.getBooleanExtra(INTENT_APP_BYPASS, false);
 		final String[] appList = intent.getStringArrayExtra(INTENT_APP_LIST);
 		final boolean ipv6 = intent.getBooleanExtra(INTENT_IPV6_PROXY, false);
+		final String udpgw = intent.getStringExtra(INTENT_UDP_GW);
 		
 		// Create an fd.
 		configure(name, route, perApp, appBypass, appList, ipv6);
@@ -54,7 +55,7 @@ public class SocksVpnService extends VpnService {
 			Log.d(TAG, "fd: " + mInterface.getFd());
 		
 		if (mInterface != null)
-			start(mInterface.getFd(), server, port, username, passwd, dns, dnsPort, ipv6);
+			start(mInterface.getFd(), server, port, username, passwd, dns, dnsPort, ipv6, udpgw);
 		
 		return START_STICKY;
 	}
@@ -155,7 +156,7 @@ public class SocksVpnService extends VpnService {
 		mInterface = b.establish();
 	}
 
-	private void start(int fd, String server, int port, String user, String passwd, String dns, int dnsPort, boolean ipv6) {
+	private void start(int fd, String server, int port, String user, String passwd, String dns, int dnsPort, boolean ipv6, String udpgw) {
 		// Start DNS daemon first
 		Utility.makePdnsdConf(this, dns, dnsPort);
 		
@@ -167,7 +168,7 @@ public class SocksVpnService extends VpnService {
 			+ " --socks-server-addr %s:%d"
 			+ " --tunfd %d"
 			+ " --tunmtu 1500"
-			+ " --loglevel 3"
+			+ " --loglevel 5"
 			+ " --pid %s/tun2socks.pid"
 		, DIR, server, port, fd, DIR);
 		
@@ -181,6 +182,10 @@ public class SocksVpnService extends VpnService {
 		}
 		
 		command += " --dnsgw 26.26.26.1:8091";
+		
+		if (udpgw != null) {
+			command += " --udpgw-remote-server-addr " + udpgw;
+		}
 		
 		if (DEBUG) {
 			Log.d(TAG, command);

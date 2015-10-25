@@ -11,6 +11,9 @@
 	<string name="server_port">Server Port</string>
 	<string name="ipv6_proxy">IPv6</string>
 	<string name="ipv6_proxy_sum">Enable IPv6 forwarding. If the server supports IPv6, you can access IPv6 contents from IPv4 network with this enabled.</string>
+	<string name="udp_proxy">UDP Forwarding</string>
+	<string name="udp_proxy_sum">Forward UDP packets to badvpn-udpgw via SOCKS5. This needs badvpn-udpgw running on the remote server (normally listening on 127.0.0.1) to work.</string>
+	<string name="udp_gw">UDP Gateway (Remote)</string>
 	
 	<string name="authentication">Authentication</string>
 	<string name="auth_userpw">Username &amp; Password Authentication</string>

@@ -21,7 +21,8 @@ public class Constants
 							INTENT_PER_APP = INTENT_PREFIX + "PERAPP",
 							INTENT_APP_BYPASS = INTENT_PREFIX + "APPBYPASS",
 							INTENT_APP_LIST = INTENT_PREFIX + "APPLIST",
-							INTENT_IPV6_PROXY = INTENT_PREFIX + "IPV6";
+							INTENT_IPV6_PROXY = INTENT_PREFIX + "IPV6",
+							INTENT_UDP_GW = INTENT_PREFIX + "UDPGW";
 	
 	public static final String PREF = "profile",
 							PREF_PROFILE = "profile",
@@ -29,6 +30,8 @@ public class Constants
 							PREF_SERVER_IP = "server_ip",
 							PREF_SERVER_PORT = "server_port",
 							PREF_IPV6_PROXY = "ipv6_proxy",
+							PREF_UDP_PROXY = "udp_proxy",
+							PREF_UDP_GW = "udp_gw",
 							PREF_AUTH_USERPW = "auth_userpw",
 							PREF_AUTH_USERNAME = "auth_username",
 							PREF_AUTH_PASSWORD = "auth_password",

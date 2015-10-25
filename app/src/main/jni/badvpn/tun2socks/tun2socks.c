@@ -732,7 +732,7 @@ void print_help (const char *name)
         "        [--password <password>]\n"
         "        [--password-file <file>]\n"
         "        [--append-source-to-username]\n"
-#ifdef ANDROID
+#ifdef ANDROID_UDP
         "        [--enable-udprelay]\n"
         "        [--udprelay-max-connections <number>]\n"
 #else
@@ -976,7 +976,7 @@ int parse_arguments (int argc, char *argv[])
         else if (!strcmp(arg, "--append-source-to-username")) {
             options.append_source_to_username = 1;
         }
-#ifdef ANDROID
+#ifdef ANDROID_UDP
         else if (!strcmp(arg, "--enable-udprelay")) {
             options.udpgw_remote_server_addr = "0.0.0.0:0";
 #else
@@ -989,7 +989,7 @@ int parse_arguments (int argc, char *argv[])
             i++;
 #endif
         }
-#ifdef ANDROID
+#ifdef ANDROID_UDP
         else if (!strcmp(arg, "--udprelay-max-connections")) {
 #else
         else if (!strcmp(arg, "--udpgw-max-connections")) {
@@ -1004,7 +1004,7 @@ int parse_arguments (int argc, char *argv[])
             }
             i++;
         }
-#ifndef ANDROID
+#ifndef ANDROID_UDP
         else if (!strcmp(arg, "--udpgw-connection-buffer-size")) {
             if (1 >= argc - i) {
                 fprintf(stderr, "%s: requires an argument\n", arg);
@@ -1126,7 +1126,7 @@ int process_arguments (void)
     // resolve remote udpgw server address
     if (options.udpgw_remote_server_addr) {
         if (!BAddr_Parse2(&udpgw_remote_server_addr, options.udpgw_remote_server_addr, NULL, 0, 0)) {
-#ifdef ANDROID
+#ifdef ANDROID_UDP
             BLog(BLOG_ERROR, "udprelay server addr: BAddr_Parse2 failed");
 #else
             BLog(BLOG_ERROR, "remote udpgw server addr: BAddr_Parse2 failed");

@@ -1,6 +1,7 @@
 package net.typeblog.socks.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.util.Log;
@@ -14,6 +15,7 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 import net.typeblog.socks.R;
+import net.typeblog.socks.SocksVpnService;
 import net.typeblog.socks.System;
 import static net.typeblog.socks.BuildConfig.DEBUG;
 import static net.typeblog.socks.util.Constants.*;
@@ -184,5 +186,33 @@ public class Utility {
 				
 			}
 		}
+	}
+	
+	public static void startVpn(Context context, Profile profile) {
+		Intent i = new Intent(context, SocksVpnService.class)
+			.putExtra(INTENT_NAME, profile.getName())
+			.putExtra(INTENT_SERVER, profile.getServer())
+			.putExtra(INTENT_PORT, profile.getPort())
+			.putExtra(INTENT_ROUTE, profile.getRoute())
+			.putExtra(INTENT_DNS, profile.getDns())
+			.putExtra(INTENT_DNS_PORT, profile.getDnsPort())
+			.putExtra(INTENT_PER_APP, profile.isPerApp())
+			.putExtra(INTENT_IPV6_PROXY, profile.hasIPv6());
+
+		if (profile.isUserPw()) {
+			i.putExtra(INTENT_USERNAME, profile.getUsername())
+				.putExtra(INTENT_PASSWORD, profile.getPassword());
+		}
+
+		if (profile.isPerApp()) {
+			i.putExtra(INTENT_APP_BYPASS, profile.isBypassApp())
+				.putExtra(INTENT_APP_LIST, profile.getAppList().split("\n"));
+		}
+
+		if (profile.hasUDP()) {
+			i.putExtra(INTENT_UDP_GW, profile.getUDPGW());
+		}
+		
+		context.startService(i);
 	}
 }

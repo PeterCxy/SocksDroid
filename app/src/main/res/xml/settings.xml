@@ -81,6 +81,10 @@
 			android:singleLine="true"/>
 		
 		<CheckBoxPreference
+			android:key="adv_auto_connect"
+			android:title="@string/adv_auto_connect"/>
+		
+		<CheckBoxPreference
 			android:key="adv_per_app"
 			android:title="@string/adv_per_app"/>
 		

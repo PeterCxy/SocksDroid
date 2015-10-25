@@ -34,6 +34,10 @@ public class SocksVpnService extends VpnService {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
+		if (intent == null) {
+			return 0;
+		}
+		
 		final String name = intent.getStringExtra(INTENT_NAME);
 		final String server = intent.getStringExtra(INTENT_SERVER);
 		final int port = intent.getIntExtra(INTENT_PORT, 1080);

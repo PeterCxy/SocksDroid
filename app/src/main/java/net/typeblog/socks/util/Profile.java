@@ -134,6 +134,14 @@ public class Profile {
 		mPref.edit().putString(key("udpgw"), gw).commit();
 	}
 	
+	public boolean autoConnect() {
+		return mPref.getBoolean(key("auto"), false);
+	}
+	
+	public void setAutoConnect(boolean auto) {
+		mPref.edit().putBoolean(key("auto"), auto).commit();
+	}
+	
 	void delete() {
 		mPref.edit()
 			.remove(key("server"))
@@ -150,6 +158,7 @@ public class Profile {
 			.remove(key("ipv6"))
 			.remove(key("udp"))
 			.remove(key("udpgw"))
+			.remove(key("auto"))
 			.commit();
 	}
 	

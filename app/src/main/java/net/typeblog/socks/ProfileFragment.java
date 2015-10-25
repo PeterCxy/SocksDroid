@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import net.typeblog.socks.util.Profile;
 import net.typeblog.socks.util.ProfileManager;
+import net.typeblog.socks.util.Utility;
 import static net.typeblog.socks.util.Constants.*;
 
 public class ProfileFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener,
@@ -59,7 +60,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 	private ListPreference mPrefProfile, mPrefRoutes;
 	private EditTextPreference mPrefServer, mPrefPort, mPrefUsername, mPrefPassword,
 					mPrefDns, mPrefDnsPort, mPrefAppList, mPrefUDPGW;
-	private CheckBoxPreference mPrefUserpw, mPrefPerApp, mPrefAppBypass, mPrefIPv6, mPrefUDP;
+	private CheckBoxPreference mPrefUserpw, mPrefPerApp, mPrefAppBypass, mPrefIPv6, mPrefUDP, mPrefAuto;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -166,6 +167,9 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 			mProfile.setUDPGW(newValue.toString());
 			resetTextN(mPrefUDPGW, newValue);
 			return true;
+		} else if (p == mPrefAuto) {
+			mProfile.setAutoConnect(Boolean.parseBoolean(newValue.toString()));
+			return true;
 		} else {
 			return false;
 		}
@@ -185,32 +189,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if (resultCode == Activity.RESULT_OK) {
-			Intent i = new Intent(getActivity(), SocksVpnService.class)
-				.putExtra(INTENT_NAME, mProfile.getName())
-				.putExtra(INTENT_SERVER, mProfile.getServer())
-				.putExtra(INTENT_PORT, mProfile.getPort())
-				.putExtra(INTENT_ROUTE, mProfile.getRoute())
-				.putExtra(INTENT_DNS, mProfile.getDns())
-				.putExtra(INTENT_DNS_PORT, mProfile.getDnsPort())
-				.putExtra(INTENT_PER_APP, mProfile.isPerApp())
-				.putExtra(INTENT_IPV6_PROXY, mProfile.hasIPv6());
-			
-			if (mProfile.isUserPw()) {
-				i.putExtra(INTENT_USERNAME, mProfile.getUsername())
-					.putExtra(INTENT_PASSWORD, mProfile.getPassword());
-			}
-			
-			if (mProfile.isPerApp()) {
-				i.putExtra(INTENT_APP_BYPASS, mProfile.isBypassApp())
-					.putExtra(INTENT_APP_LIST, mProfile.getAppList().split("\n"));
-			}
-			
-			if (mProfile.hasUDP()) {
-				i.putExtra(INTENT_UDP_GW, mProfile.getUDPGW());
-			}
-			
-			getActivity().startService(i);
-			
+			Utility.startVpn(getActivity(), mProfile);
 			checkState();
 		}
 	}
@@ -231,6 +210,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefIPv6 = (CheckBoxPreference) findPreference(PREF_IPV6_PROXY);
 		mPrefUDP = (CheckBoxPreference) findPreference(PREF_UDP_PROXY);
 		mPrefUDPGW = (EditTextPreference) findPreference(PREF_UDP_GW);
+		mPrefAuto = (CheckBoxPreference) findPreference(PREF_ADV_AUTO_CONNECT);
 		
 		mPrefProfile.setOnPreferenceChangeListener(this);
 		mPrefServer.setOnPreferenceChangeListener(this);
@@ -247,6 +227,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefIPv6.setOnPreferenceChangeListener(this);
 		mPrefUDP.setOnPreferenceChangeListener(this);
 		mPrefUDPGW.setOnPreferenceChangeListener(this);
+		mPrefAuto.setOnPreferenceChangeListener(this);
 	}
 	
 	private void reload() {
@@ -265,6 +246,7 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		mPrefAppBypass.setChecked(mProfile.isBypassApp());
 		mPrefIPv6.setChecked(mProfile.hasIPv6());
 		mPrefUDP.setChecked(mProfile.hasUDP());
+		mPrefAuto.setChecked(mProfile.autoConnect());
 		
 		mPrefServer.setText(mProfile.getServer());
 		mPrefPort.setText(String.valueOf(mProfile.getPort()));

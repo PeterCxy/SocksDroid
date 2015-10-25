@@ -26,6 +26,7 @@
 	<string name="adv_route_non_chn">Non-Chinese IPs</string>
 	<string name="adv_dns">DNS Server</string>
 	<string name="adv_dns_port">DNS Port (TCP)</string>
+	<string name="adv_auto_connect">Connect on Boot</string>
 	<string name="adv_per_app">Per-app Proxy</string>
 	<string name="adv_app_bypass">Bypass Mode</string>
 	<string name="adv_app_bypass_sum">Enable this option to bypass selected apps instead of proxying them</string>

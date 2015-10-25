@@ -40,11 +40,18 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		public void onServiceConnected(ComponentName p1, IBinder binder) {
 			mRunning = ((SocksVpnService.VpnBinder) binder).isRunning();
 			mBinder = (SocksVpnService.VpnBinder) binder;
+			updateState();
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName p1) {
 			mBinder = null;
+		}
+	};
+	private Runnable mStateRunnable = new Runnable() {
+		@Override
+		public void run() {
+			updateState();
 		}
 	};
 	private SocksVpnService.VpnBinder mBinder;
@@ -374,14 +381,14 @@ public class ProfileFragment extends PreferenceFragment implements Preference.On
 		getActivity().bindService(new Intent(getActivity(), SocksVpnService.class), mConnection, 0);
 		
 		// Wait for 3 secs
-		mSwitch.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				mSwitch.setChecked(mRunning);
-				mSwitch.setEnabled(true);
-				mSwitch.setOnCheckedChangeListener(ProfileFragment.this);
-			}
-		}, 3000);
+		mSwitch.postDelayed(mStateRunnable, 3000);
+	}
+	
+	private void updateState() {
+		mSwitch.setChecked(mRunning);
+		mSwitch.setEnabled(true);
+		mSwitch.setOnCheckedChangeListener(ProfileFragment.this);
+		mSwitch.removeCallbacks(mStateRunnable);
 	}
 	
 	private void startVpn() {

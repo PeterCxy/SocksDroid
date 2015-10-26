@@ -1,8 +1,10 @@
 SocksDroid
 ---
-SOCKS5 client for Android 5.0+ making use of the `VpnService` API and `tun2socks`.
+SOCKS5 client for Android 5.0+ making use of the `VpnService` API and `tun2socks` so that it works without root permission (unlike ProxyDroid).
 
 Most of the JNI code are imported from `shadowsocks-android` project because they have already done most of the work.
+
+### THIS IS NOT A SHADOWSOCKS CLIENT! SOCKS5 IS NOT SHADOWSOCKS!
 
 UDP Forwarding
 ---

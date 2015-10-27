@@ -194,7 +194,7 @@ public class SocksVpnService extends VpnService {
 			+ " --socks-server-addr %s:%d"
 			+ " --tunfd %d"
 			+ " --tunmtu 1500"
-			+ " --loglevel 5"
+			+ " --loglevel 3"
 			+ " --pid %s/tun2socks.pid"
 		, DIR, server, port, fd, DIR);
 		

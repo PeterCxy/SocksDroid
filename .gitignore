@@ -2,3 +2,4 @@ build
 obj
 libs
 assets
+.gradle

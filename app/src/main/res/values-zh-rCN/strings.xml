@@ -16,7 +16,7 @@
 	<string name="udp_gw">UDP网关（远端）</string>
 	
 	<string name="authentication">认证</string>
-	<string name="auth_userpw">用户名&amp;密码认证/string>
+	<string name="auth_userpw">用户名&amp;密码认证</string>
 	<string name="auth_username">用户名</string>
 	<string name="auth_password">密码</string>
 	

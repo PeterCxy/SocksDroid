@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SocksDroid</string>
+    
+	<string name="profile">配置文件</string>
+	<string name="prof_default">默认</string>
+	
+	<string name="connection">连接</string>
+	<string name="server_ip">服务器IP</string>
+	<string name="server_port">服务器端口</string>
+	<string name="ipv6_proxy">IPv6</string>
+	<string name="ipv6_proxy_sum">启用IPv6转发。如果服务器支持IPv6，打开这个选项后你可以通过IPv4网络访问IPv6内容。</string>
+	<string name="udp_proxy">UDP转发</string>
+	<string name="udp_proxy_sum">通过SOCKS5将UDP数据包转发给badvpn-udpgw，这需要远端服务器上运行badvpn-udpgw（通常在127.0.0.1上监听）。</string>
+	<string name="udp_gw">UDP网关（远端）</string>
+	
+	<string name="authentication">认证</string>
+	<string name="auth_userpw">用户名&amp;密码认证/string>
+	<string name="auth_username">用户名</string>
+	<string name="auth_password">密码</string>
+	
+	<string name="advanced">高级</string>
+	<string name="adv_route">Route</string>
+	<string name="adv_route_all">所有（默认）</string>
+	<string name="adv_route_non_chn">非中国地址</string>
+	<string name="adv_dns">DNS服务器</string>
+	<string name="adv_dns_port">DNS端口（TCP）</string>
+	<string name="adv_auto_connect">开机自动连接</string>
+	<string name="adv_per_app">单App代理</string>
+	<string name="adv_app_bypass">绕行模式</string>
+	<string name="adv_app_bypass_sum">启用这个选项后，选中的App将不经过代理，否则反之。</string>
+	<string name="adv_app_list">App列表</string>
+	<string name="adv_app_list_sum">每行输入一个App的包名（可通过设置-App查询）</string>
+	
+	<string name="prof_add">添加配置文件</string>
+	<string name="prof_del">删除配置文件</string>
+	<string name="prof_del_confirm">删除配置文件｢%s｣吗?</string>
+	<string name="switch_main">开/关代理</string>
+	
+	<string name="err_add_prof">添加配置文件｢%s｣失败</string>
+	<string name="err_del_prof">删除配置文件｢%s｣失败</string>
+	<string name="notify_title">SOCKS5代理已激活</string>
+	<string name="notify_msg">已连接至｢%s｣</string>
+	
+</resources>

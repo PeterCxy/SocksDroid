@@ -17,7 +17,7 @@ public class BootReceiver extends BroadcastReceiver {
 	@Override void onReceive(Context context, Intent intent) {
 		def p = ProfileManager.getInstance(context).getDefault()
 		
-		if (p.autoConnect() && !VpnService.prepare(context)) {
+		if (p.autoConnect && !VpnService.prepare(context)) {
 			
 			if (DEBUG) {
 				Log.d(TAG, "starting VPN service on boot")

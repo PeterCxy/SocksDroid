@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'groovyx.grooid.groovy-android'
 
 android {
 	compileSdkVersion 23
@@ -27,4 +28,5 @@ android {
 
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
+	compile 'org.codehaus.groovy:groovy:2.4.3:grooid'
 }

@@ -1,13 +1,13 @@
-package net.typeblog.socks.util;
+package net.typeblog.socks.util
 
 public class Constants
 {
-	public static final String DIR = "/data/data/net.typeblog.socks/files";
+	public static final String DIR = "/data/data/net.typeblog.socks/files"
 	
-	public static final String ABI_DEFAULT = "armeabi-v7a";
+	public static final String ABI_DEFAULT = "armeabi-v7a"
 	
 	public static final String ROUTE_ALL = "all",
-							ROUTE_CHN = "chn";
+							ROUTE_CHN = "chn"
 	
 	public static final String INTENT_PREFIX = "SOCKS",
 							INTENT_NAME = INTENT_PREFIX + "NAME",
@@ -22,7 +22,7 @@ public class Constants
 							INTENT_APP_BYPASS = INTENT_PREFIX + "APPBYPASS",
 							INTENT_APP_LIST = INTENT_PREFIX + "APPLIST",
 							INTENT_IPV6_PROXY = INTENT_PREFIX + "IPV6",
-							INTENT_UDP_GW = INTENT_PREFIX + "UDPGW";
+							INTENT_UDP_GW = INTENT_PREFIX + "UDPGW"
 	
 	public static final String PREF = "profile",
 							PREF_PROFILE = "profile",
@@ -41,5 +41,5 @@ public class Constants
 							PREF_ADV_PER_APP = "adv_per_app",
 							PREF_ADV_APP_BYPASS = "adv_app_bypass",
 							PREF_ADV_APP_LIST = "adv_app_list",
-							PREF_ADV_AUTO_CONNECT = "adv_auto_connect";
+							PREF_ADV_AUTO_CONNECT = "adv_auto_connect"
 }

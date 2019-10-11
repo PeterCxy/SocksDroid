@@ -2,45 +2,46 @@
 <resources>
 
     <string name="app_name">SocksDroid</string>
-    
-	<string name="profile">Profile</string>
-	<string name="prof_default">Default</string>
-	
-	<string name="connection">Connection</string>
-	<string name="server_ip">Server IP</string>
-	<string name="server_port">Server Port</string>
-	<string name="ipv6_proxy">IPv6</string>
-	<string name="ipv6_proxy_sum">Enable IPv6 forwarding. If the server supports IPv6, you can access IPv6 contents from IPv4 network with this enabled.</string>
-	<string name="udp_proxy">UDP Forwarding</string>
-	<string name="udp_proxy_sum">Forward UDP packets to badvpn-udpgw via SOCKS5. This needs badvpn-udpgw running on the remote server (normally listening on 127.0.0.1) to work.</string>
-	<string name="udp_gw">UDP Gateway (Remote)</string>
-	
-	<string name="authentication">Authentication</string>
-	<string name="auth_userpw">Username &amp; Password Authentication</string>
-	<string name="auth_username">Username</string>
-	<string name="auth_password">Password</string>
-	
-	<string name="advanced">Advanced</string>
-	<string name="adv_route">Route</string>
-	<string name="adv_route_all">All (Default)</string>
-	<string name="adv_route_non_chn">Non-Chinese IPs</string>
-	<string name="adv_dns">DNS Server</string>
-	<string name="adv_dns_port">DNS Port (TCP)</string>
-	<string name="adv_auto_connect">Connect on Boot</string>
-	<string name="adv_per_app">Per-app Proxy</string>
-	<string name="adv_app_bypass">Bypass Mode</string>
-	<string name="adv_app_bypass_sum">Enable this option to bypass selected apps instead of proxying them</string>
-	<string name="adv_app_list">App List</string>
-	<string name="adv_app_list_sum">Enter one app\'s package name in one line. See Settings -> Apps for package names of apps.</string>
-	
-	<string name="prof_add">Add Profile</string>
-	<string name="prof_del">Delete Profile</string>
-	<string name="prof_del_confirm">Delete profile %s?</string>
-	<string name="switch_main">Switch on / off the proxy</string>
-	
-	<string name="err_add_prof">Failed to add profile %s</string>
-	<string name="err_del_prof">Error deleting profile %s</string>
-	<string name="notify_title">SOCKS5 proxy activated</string>
-	<string name="notify_msg">Connected to ｢%s｣</string>
-	
+
+    <string name="profile">Profile</string>
+    <string name="prof_default">Default</string>
+
+    <string name="connection">Connection</string>
+    <string name="server_ip">Server IP</string>
+    <string name="server_port">Server Port</string>
+    <string name="ipv6_proxy">IPv6</string>
+    <string name="ipv6_proxy_sum">Enable IPv6 forwarding. If the server supports IPv6, you can access IPv6 contents from IPv4 network with this enabled.</string>
+    <string name="udp_proxy">UDP Forwarding</string>
+    <string name="udp_proxy_sum">Forward UDP packets to badvpn-udpgw via SOCKS5. This needs badvpn-udpgw running on the remote server (normally listening on 127.0.0.1) to work.</string>
+    <string name="udp_gw">UDP Gateway (Remote)</string>
+
+    <string name="authentication">Authentication</string>
+    <string name="auth_userpw">Username &amp; Password Authentication</string>
+    <string name="auth_username">Username</string>
+    <string name="auth_password">Password</string>
+
+    <string name="advanced">Advanced</string>
+    <string name="adv_route">Route</string>
+    <string name="adv_route_all">All (Default)</string>
+    <string name="adv_route_non_chn">Non-Chinese IPs</string>
+    <string name="adv_dns">DNS Server</string>
+    <string name="adv_dns_port">DNS Port (TCP)</string>
+    <string name="adv_auto_connect">Connect on Boot</string>
+    <string name="adv_per_app">Per-app Proxy</string>
+    <string name="adv_app_bypass">Bypass Mode</string>
+    <string name="adv_app_bypass_sum">Enable this option to bypass selected apps instead of proxying them</string>
+    <string name="adv_app_list">App List</string>
+    <string name="adv_app_list_sum">Enter one app\'s package name in one line. See Settings -> Apps for package names of apps.</string>
+
+    <string name="prof_add">Add Profile</string>
+    <string name="prof_del">Delete Profile</string>
+    <string name="prof_del_confirm">Delete profile %s?</string>
+    <string name="switch_main">Switch on / off the proxy</string>
+
+    <string name="err_add_prof">Failed to add profile %s</string>
+    <string name="err_del_prof">Error deleting profile %s</string>
+    <string name="notify_title">SOCKS5 proxy activated</string>
+    <string name="notify_msg">Connected to %s</string>
+    <string name="channel_name">Proxy active</string>
+
 </resources>

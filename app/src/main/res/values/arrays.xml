@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string-array name="adv_routes" translatable="false">
-		<item>@string/adv_route_all</item>
-		<item>@string/adv_route_non_chn</item>
-	</string-array>
-	
-	<string-array name="adv_routes_values" translatable="false">
-		<item>all</item>
-		<item>chn</item>
-	</string-array>
+    <string-array name="adv_routes" translatable="false">
+        <item>@string/adv_route_all</item>
+        <item>@string/adv_route_non_chn</item>
+    </string-array>
+
+    <string-array name="adv_routes_values" translatable="false">
+        <item>all</item>
+        <item>chn</item>
+    </string-array>
 </resources>

@@ -6,18 +6,17 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.VpnService;
-import android.net.VpnService.Builder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import android.util.Log;
 
-import net.typeblog.socks.R;
 import net.typeblog.socks.util.Routes;
 import net.typeblog.socks.util.Utility;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import static net.typeblog.socks.util.Constants.*;
 import static net.typeblog.socks.BuildConfig.DEBUG;
@@ -77,7 +76,7 @@ public class SocksVpnService extends VpnService {
             NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
                     getString(R.string.channel_name), NotificationManager.IMPORTANCE_NONE);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
             builder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
         } else {
             builder = new Notification.Builder(this);
@@ -210,17 +209,19 @@ public class SocksVpnService extends VpnService {
         // Start DNS daemon first
         Utility.makePdnsdConf(this, dns, dnsPort);
 
-        Utility.exec(String.format(Locale.US, "%s/pdnsd -c %s/pdnsd.conf", getFilesDir(), getFilesDir()));
+        Utility.exec(String.format(Locale.US, "%s/libpdnsd.so -c %s/pdnsd.conf",
+                getApplicationInfo().nativeLibraryDir, getFilesDir()));
 
         String command = String.format(Locale.US,
-                "%s/tun2socks --netif-ipaddr 26.26.26.2"
+                "%s/libtun2socks.so --netif-ipaddr 26.26.26.2"
                         + " --netif-netmask 255.255.255.0"
                         + " --socks-server-addr %s:%d"
                         + " --tunfd %d"
                         + " --tunmtu 1500"
                         + " --loglevel 3"
                         + " --pid %s/tun2socks.pid"
-                , getFilesDir(), server, port, fd, getFilesDir());
+                        + " --sock %s/sock_path"
+                , getApplicationInfo().nativeLibraryDir, server, port, fd, getFilesDir(), getApplicationInfo().dataDir);
 
         if (user != null) {
             command += " --username " + user;
@@ -249,7 +250,7 @@ public class SocksVpnService extends VpnService {
         // Try to send the Fd through socket.
         int i = 0;
         while (i < 5) {
-            if (System.sendfd(fd) != -1) {
+            if (System.sendfd(fd, getApplicationInfo().dataDir + "/sock_path") != -1) {
                 mRunning = true;
                 return;
             }

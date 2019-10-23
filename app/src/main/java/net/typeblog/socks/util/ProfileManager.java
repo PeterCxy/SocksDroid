@@ -25,7 +25,6 @@ public class ProfileManager {
         mProfiles.clear();
         mProfiles.add(mContext.getString(R.string.prof_default));
 
-        //noinspection ConstantConditions
         String[] profiles = mPref.getString(PREF_PROFILE, "").split("\n");
 
         for (String p : profiles) {

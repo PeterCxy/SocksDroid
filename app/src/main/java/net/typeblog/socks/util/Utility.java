@@ -2,13 +2,10 @@ package net.typeblog.socks.util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
@@ -16,91 +13,10 @@ import java.util.List;
 
 import net.typeblog.socks.R;
 import net.typeblog.socks.SocksVpnService;
-import net.typeblog.socks.System;
-import static net.typeblog.socks.BuildConfig.DEBUG;
 import static net.typeblog.socks.util.Constants.*;
 
 public class Utility {
     private static final String TAG = Utility.class.getSimpleName();
-
-    public static void extractFile(Context context) {
-        // Check app version
-        SharedPreferences pref = context.getSharedPreferences("ver", Context.MODE_PRIVATE);
-
-        int ver;
-        try {
-            ver = context.getPackageManager().getPackageInfo("net.typeblog.socks", 0).versionCode;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-            //return;
-        }
-
-        if (pref.getInt("ver", -1) == ver) {
-            return;
-        }
-
-        String target = context.getFilesDir().toString();
-
-        if (DEBUG) {
-            Log.d(TAG, "target = " + target);
-        }
-
-        if (new File(target + "/tun2socks").exists()) {
-            if(!new File(target + "/tun2socks").delete())
-                    Log.w(TAG, "failed to delete tun2socks");
-        }
-
-        if (new File(target + "/pdnsd").exists()) {
-            if(!new File(target + "/pdnsd").delete())
-                    Log.w(TAG, "failed to delete pdnsd");
-        }
-
-        if(!new File(target).mkdir())
-            Log.w(TAG, "failed to create directory");
-
-        String source = System.getABI();
-
-        AssetManager m = context.getAssets();
-
-        String[] files = null;
-        try {
-            files = m.list(source);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (files == null || files.length == 0) {
-            return;
-        }
-
-        for (String f : files) {
-            InputStream in;
-            OutputStream out;
-
-            try {
-                in = m.open(source + "/" + f);
-                out = new FileOutputStream(target + "/" + f);
-
-                byte[] buf = new byte[512];
-                int len;
-
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-
-                in.close();
-                out.flush();
-                out.close();
-
-                exec(String.format("chmod 755 %s/%s", target, f));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        pref.edit().putInt("ver", ver).apply();
-
-    }
 
     public static int exec(String cmd) {
         try {
@@ -163,7 +79,9 @@ public class Utility {
 
     public static void makePdnsdConf(Context context, String dns, int port) {
         String conf = context.getString(R.string.pdnsd_conf)
-                .replace("{IP}", dns).replace("{PORT}", Integer.toString(port));
+                .replace("{DIR}", context.getFilesDir().toString())
+                .replace("{IP}", dns)
+                .replace("{PORT}", Integer.toString(port));
 
         File f = new File(context.getFilesDir() + "/pdnsd.conf");
 

@@ -1,14 +1,12 @@
 #!/bin/bash
 
-rm -rf assets
 rm -rf jniLibs
 
 ndk-build
 
 for p in armeabi-v7a arm64-v8a x86 x86_64; do
-	mkdir -p assets/$p
-	cp libs/$p/{tun2socks,pdnsd} assets/$p/
+	mv libs/$p/{tun2socks,libtun2socks.so}
+	mv libs/$p/{pdnsd,libpdnsd.so}
 done
 
-rm -rf libs/*/{tun2socks,pdnsd}
 mv libs jniLibs

@@ -4470,17 +4470,6 @@ $as_echo "$as_me: error: --with-target must have Linux, BSD or Cygwin as paramet
 esac
 
 
-# Check whether --with-cachedir was given.
-if test "${with_cachedir+set}" = set; then
-  withval=$with_cachedir; cachedir=$withval
-fi
-
-cat >>confdefs.h <<_ACEOF
-#define CACHEDIR "$cachedir"
-_ACEOF
-
-
-
 # Check whether --enable-isdn was given.
 if test "${enable_isdn+set}" = set; then
   enableval=$enable_isdn; test $enableval = "yes" && cat >>confdefs.h <<\_ACEOF

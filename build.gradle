@@ -2,17 +2,30 @@
 
 buildscript {
 	repositories {
-		jcenter()
+		maven { url 'https://maven.aliyun.com/repository/public' }
+		maven { url 'https://maven.aliyun.com/repository/google' }
+		maven { url 'https://maven.aliyun.com/repository/jcenter' }
+		maven { url 'https://maven.aliyun.com/repository/central' }
+		maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+		maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+		mavenCentral()
 	}
 	
 	dependencies {
-		classpath 'com.android.tools.build:gradle:1.0.0'
+		classpath 'com.android.tools.build:gradle:3.0.0'
+		//https://github.com/groovy/groovy-android-gradle-plugin
 		classpath 'org.codehaus.groovy:gradle-groovy-android-plugin:0.3.6'
+//		classpath 'org.codehaus.groovy:groovy-android-gradle-plugin:2.0.1'
     }
 }
 
 allprojects {
 	repositories {
-		jcenter()
+		maven { url 'https://maven.aliyun.com/repository/public' }
+		maven { url 'https://maven.aliyun.com/repository/google' }
+		maven { url 'https://maven.aliyun.com/repository/jcenter' }
+		maven { url 'https://maven.aliyun.com/repository/central' }
+		maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+		maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
 	}
 }

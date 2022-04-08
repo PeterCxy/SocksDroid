@@ -22,7 +22,6 @@ public class ProfileManager {
 
     private List<String> getProfileList() {
         List<String> mProfiles = new ArrayList<>();
-        mProfiles.clear();
         mProfiles.add(mContext.getString(R.string.prof_default));
 
         String[] profiles = mPref.getString(PREF_PROFILE, "").split("\n");

@@ -84,8 +84,13 @@ public class SocksVpnService extends VpnService {
 
         // Create the notification
         int NOTIFICATION_ID = 1;
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        int intentFlags = PendingIntent.FLAG_UPDATE_CURRENT;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            intentFlags |= PendingIntent.FLAG_IMMUTABLE;
+        }
+        PendingIntent contentIntent;
+        contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, MainActivity.class), intentFlags);
         startForeground(NOTIFICATION_ID, builder
                 .setContentTitle(getString(R.string.notify_title))
                 .setContentText(String.format(getString(R.string.notify_msg), name))
@@ -258,7 +263,7 @@ public class SocksVpnService extends VpnService {
             i++;
 
             try {
-                Thread.sleep(1000 * i);
+                Thread.sleep(1000L * i);
             } catch (Exception e) {
                 e.printStackTrace();
             }

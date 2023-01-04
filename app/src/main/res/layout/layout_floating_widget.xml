@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+ 
+ 
+    <RelativeLayout
+        android:id="@+id/relativeLayoutParent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+ 
+        <!-- this is the collapsed layout -->
+        <RelativeLayout
+            android:id="@+id/layoutCollapsed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+ 
+            <ImageView
+                android:id="@+id/collapsed_iv"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/java" />
+ 
+            <ImageView
+                android:id="@+id/buttonClose"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="50dp"
+                 />
+        </RelativeLayout>
+ 
+        <!-- this is the expanded layout -->
+        <LinearLayout
+            android:id="@+id/layoutExpanded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#a0c3d7"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:visibility="gone">
+ 
+            <ImageView
+                android:id="@+id/buttonSimplifiedCodingExpanded"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                
+                tools:ignore="ContentDescription" />
+ 
+            <LinearLayout
+                android:id="@+id/buttonSimplifiedCoding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               android:gravity="center" android:orientation="vertical">
+ 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="15dp"
+                    android:text="Simplified Coding"
+                    
+                    
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+ 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Your man from Facebook "
+                    
+                    
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+            </LinearLayout>
+ 
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

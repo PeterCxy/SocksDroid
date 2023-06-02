@@ -198,6 +198,7 @@ struct {
     int tun_mtu;
     int fake_proc;
     char *pid;
+    char *sock;
     char *dnsgw;
 #else
     char *tundev;
@@ -502,11 +503,10 @@ int main (int argc, char **argv)
         goto fail2;
     }
 
-    char *path = "/data/data/net.typeblog.socks/sock_path";
-    unlink(path);
+    unlink(options.sock);
     memset(&addr, 0, sizeof(addr));
     addr.sun_family = AF_UNIX;
-    strncpy(addr.sun_path, path, sizeof(addr.sun_path)-1);
+    strncpy(addr.sun_path, options.sock, sizeof(addr.sun_path)-1);
 
     if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
         BLog(BLOG_ERROR, "bind() failed: %s (sock = %d)\n", strerror(errno), sock);
@@ -721,6 +721,7 @@ void print_help (const char *name)
         "        [--tunmtu <mtu>]\n"
         "        [--dnsgw <dns_gateway_address>]\n"
         "        [--pid <pid_file>]\n"
+        "        [--sock <sock_file>]\n"
 #else
         "        [--tundev <name>]\n"
 #endif
@@ -907,6 +908,14 @@ int parse_arguments (int argc, char *argv[])
             options.pid = argv[i + 1];
             i++;
         }
+        else if (!strcmp(arg, "--sock")) {
+            if (1 >= argc - i) {
+                fprintf(stderr, "%s: requires an argument\n", arg);
+                return 0;
+            }
+            options.sock = argv[i + 1];
+            i++;
+        }
 #else
         else if (!strcmp(arg, "--tundev")) {
             if (1 >= argc - i) {
@@ -1056,6 +1065,13 @@ int parse_arguments (int argc, char *argv[])
             return 0;
         }
     }
+
+#ifdef ANDROID
+    if (!options.sock) {
+        fprintf(stderr, "--sock is required\n");
+        return 0;
+    }
+#endif
 
     return 1;
 }

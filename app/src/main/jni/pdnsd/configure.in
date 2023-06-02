@@ -63,13 +63,6 @@ case $target in
     ;;
 esac
 
-AC_ARG_WITH(cachedir,
-[  --with-cachedir=dir         Default directory for pdnsd cache 
-                              (default=/var/cache/pdnsd)],
-  cachedir=$withval)
-AC_DEFINE_UNQUOTED(CACHEDIR, "$cachedir")
-AC_SUBST(cachedir)
-
 AC_ARG_ENABLE(isdn,
 [  --enable-isdn               Enable ISDN support (may cause problems on 
                               some systems; only for Linux)],

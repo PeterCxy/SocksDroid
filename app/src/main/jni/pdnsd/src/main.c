@@ -67,7 +67,7 @@ FILE *dbg_file=NULL;
 volatile int tcp_socket=-1;
 volatile int udp_socket=-1;
 sigset_t sigs_msk;
-char *conf_file=CONFDIR"/pdnsd.conf";
+char *conf_file=NULL;
 
 
 /* version and licensing information */
@@ -140,7 +140,6 @@ static const char help_message[] =
 	"\n"
 	"-c\t\t--or--\n"
 	"--config-file\tspecifies the file the configuration is read from.\n"
-	"\t\tDefault is " CONFDIR "/pdnsd.conf\n"
 #ifdef ENABLE_IPV4
 	"-4\t\tswitches to IPv4 mode.\n"
 	"\t\t"
@@ -201,15 +200,15 @@ int final_init()
  */
 static int check_ipv6()
 {
-    int fd;
-    fd = socket(PF_INET6, SOCK_STREAM, 0);
-    if(fd < 0) {
-        if(errno == EPROTONOSUPPORT || errno == EAFNOSUPPORT || errno == EINVAL)
-            return 0;
-        return -1;
-    }
-    close(fd);
-    return 1;
+	int fd;
+	fd = socket(PF_INET6, SOCK_STREAM, 0);
+	if(fd < 0) {
+		if(errno == EPROTONOSUPPORT || errno == EAFNOSUPPORT || errno == EINVAL)
+			return 0;
+		return -1;
+	}
+	close(fd);
+	return 1;
 }
 #endif
 
@@ -386,7 +385,7 @@ int main(int argc,char *argv[])
 			if(equ) {
 				int plen=equ-arg;
 				char *valstr=equ+1;
-#       			define arg_isparam(strlit) (!strncmp(arg,strlit,strlitlen(strlit)) && plen==strlitlen(strlit))
+#				define arg_isparam(strlit) (!strncmp(arg,strlit,strlitlen(strlit)) && plen==strlitlen(strlit))
 
 				if(arg_isparam("--config-file")) {
 					conf_file=valstr;
@@ -413,6 +412,11 @@ int main(int argc,char *argv[])
 		}
 	}
 
+	if(!conf_file) {
+		fprintf(stderr,"Error: conf_file is unset\n");
+		exit(1);
+	}
+
 	init_cache();
 	{
 		char *errmsg;
@@ -437,7 +441,10 @@ int main(int argc,char *argv[])
 		exit(0);
 	}
 
-	if(!global.cache_dir)   global.cache_dir = CACHEDIR;
+	if(!global.cache_dir) {
+		fprintf(stderr,"Error: cache_dir is unset\n");
+		exit(1);
+	}
 	if(!global.scheme_file) global.scheme_file = "/var/lib/pcmcia/scheme";
 	stat_pipe=global.stat_pipe;
 
@@ -467,7 +474,7 @@ int main(int argc,char *argv[])
 		}
 		if ((pfd=open(global.pidfile,O_WRONLY|O_CREAT|O_EXCL
 #ifdef O_NOFOLLOW
-			      |O_NOFOLLOW
+				  |O_NOFOLLOW
 #else
 		/*
 		 * No O_NOFOLLOW. Nevertheless, this not a hole, since the
@@ -476,7 +483,7 @@ int main(int argc,char *argv[])
 		 * supported, this is just-in-case code.
 		 */
 #endif
-			      , 0600))==-1)
+				  , 0600))==-1)
 		{
 			log_error("Error: could not open pid file %s: %s",global.pidfile, strerror(errno));
 			exit(1);

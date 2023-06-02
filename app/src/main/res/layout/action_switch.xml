@@ -1,13 +1,13 @@
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:gravity="center">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
 
-	<Switch
-		android:id="@+id/switch_action_button"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+    <Switch
+        android:id="@+id/switch_action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

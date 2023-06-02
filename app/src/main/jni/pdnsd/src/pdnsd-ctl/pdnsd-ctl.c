@@ -107,7 +107,6 @@ static const char *const help_messages[] =
 	"Command-line options:\n"
 
 	"-c\tcachedir\n\tSet the cache directory to cachedir (must match pdnsd setting).\n"
-	"\tThe default is '" CACHEDIR "'.\n"
 	"-q\n\tBe quiet unless output is specified by command or something goes wrong.\n\n"
 
 	"Commands and needed arguments are:\n"
@@ -352,7 +351,7 @@ static int match_cmd(const char *cmd, const cmd_s cmds[])
 
 int main(int argc, char *argv[])
 {
-	char *cache_dir= CACHEDIR;
+	char *cache_dir= NULL;
 	int rv=0;
 	{
 		int i;
@@ -377,6 +376,10 @@ int main(int argc, char *argv[])
 		}
 		argc -= i;
 		argv += i;
+	}
+	if(cache_dir==NULL) {
+		fprintf(stderr,"cache_dir is unset\n");
+		exit(2);
 	}
 
 	if (argc<1) {
